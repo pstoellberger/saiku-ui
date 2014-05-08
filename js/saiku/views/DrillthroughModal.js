@@ -37,9 +37,13 @@ var DrillthroughModal = Modal.extend({
         'click input.all_dimensions' : 'select_all_dimensions'
     },
 
+    allMeasures: false,
+
     templateContent: function() {
         return $("#template-drillthrough").html();
     },
+
+
     
     initialize: function(args) {
         // Initialize properties
@@ -90,7 +94,7 @@ var DrillthroughModal = Modal.extend({
         } 
 
         var templ_dim =_.template($("#template-drillthrough-dimensions").html())({dimensions: dimensions});
-        var templ_measure =_.template($("#template-drillthrough-measures").html())({measures: measures});
+        var templ_measure =_.template($("#template-drillthrough-measures").html())({measures: measures, allMeasures: this.allMeasures});
 
         $(container).appendTo($(this.el).find('.dialog_body'));
         $(this.el).find('.sidebar').height(($("body").height() / 2) + ($("body").height() / 6) );
