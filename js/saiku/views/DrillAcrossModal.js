@@ -19,6 +19,8 @@
  */
 var DrillAcrossModal = DrillthroughModal.extend({
     
+    allMeasures: true,
+
     templateContent: function() {
         return $("#template-drillacross").html();
     },
