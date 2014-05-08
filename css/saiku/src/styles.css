@@ -1135,6 +1135,12 @@ a.disabled_toolbar:hover {
 .workspace_toolbar .drillthrough {
     background-position: -781px 7px;
 }
+.workspace_toolbar .drillacross {
+    background-image: url('../../../images/src/table_across.png');
+    background-position: 7px 7px;
+}
+
+
 .workspace_toolbar .drillthrough_export {
     background-image: url('../../../images/src/export_drillthrough.png');
     background-position: 7px 7px;

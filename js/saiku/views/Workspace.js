@@ -167,9 +167,7 @@ var Workspace = Backbone.View.extend({
         
         }
 
-        this.switch_view_state(this.viewState, true);
-
-        
+        this.switch_view_state(this.viewState, true);        
         
         // Add results table
         $(this.el).find('.workspace_results')
@@ -184,6 +182,7 @@ var Workspace = Backbone.View.extend({
         // Fire off new workspace event
         Saiku.session.trigger('workspace:new', { workspace: this });
 
+        Saiku.i18n.translate(this.el);
         return this; 
     },
     
@@ -362,7 +361,7 @@ var Workspace = Backbone.View.extend({
             $(this.el).find('.workspace_fields').removeClass('disabled').removeClass('hide');
             $(this.el).find('.workspace_editor .mdx_input').addClass('hide');
             $(this.el).find('.workspace_editor .editor_info').addClass('hide');
-            $(this.toolbar.el).find('.auto, .toggle_fields, .query_scenario, .buckets, .non_empty, .swap_axis, .mdx, .switch_to_mdx, .zoom_mode').parent().show();
+            $(this.toolbar.el).find('.auto, .toggle_fields, .query_scenario, .buckets, .non_empty, .swap_axis, .mdx, .switch_to_mdx, .zoom_mode, .drillacross').parent().show();
             $(this.el).find('.run').attr('href','#run_query');
         }
         this.adjust();
