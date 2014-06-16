@@ -4,7 +4,7 @@
 	<groupId>org.saiku</groupId>
 	<artifactId>saiku-ui</artifactId>
 	<packaging>pom</packaging>
-	<version>2.6-SNAPSHOT</version>
+	<version>2.7-SNAPSHOT</version>
 	<build>
 		<plugins>
 <!--
@@ -31,7 +31,7 @@
             </execution>
         </executions>
     </plugin>
--->
+
 
     <plugin>
         <groupId>net.alchim31.maven</groupId>
@@ -113,7 +113,7 @@
           </aggregations>
         </configuration>
       </plugin>
-
+-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -136,9 +136,10 @@
                                         <exclude name=".gitignore" />
                                     </fileset>
 								</copy>
+<!--
                                 <copy file="target/saiku.min.js" tofile="target/saiku-ui/saiku.min.js"/>
                                 <copy file="target/saiku.min.js.gz" tofile="target/saiku-ui/saiku.min.js.gz"/>
-<!--
+
                                 <copy todir="target/saiku-ui/doc/">
 									<fileset dir="${basedir}/target/jsdoc"/>
 								</copy>
