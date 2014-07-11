@@ -31,7 +31,7 @@
             </execution>
         </executions>
     </plugin>
-
+-->
 
     <plugin>
         <groupId>net.alchim31.maven</groupId>
@@ -45,7 +45,7 @@
         </executions>        
         <configuration>
           <nosuffix>true</nosuffix>
-          <gzip>true</gzip>
+          <gzip>false</gzip>
           <nomunge>false</nomunge>
           <sourceDirectory>${basedir}/js/saiku/</sourceDirectory>
           <aggregations>
@@ -57,17 +57,18 @@
                   <include>classes/render/SaikuRenderer.js</include>
                   <include>classes/render/SaikuTableRenderer.js</include>
                   <include>classes/render/SaikuChartRenderer.js</include>
-                  <include>classes/views/Tab.js</include>
                   <include>classes/models/Dimension.js</include>
                   <include>classes/views/DimensionList.js</include>
                   <include>classes/views/Toolbar.js</include>
+                  <include>classes/views/Upgrade.js</include>
                   <include>classes/views/Modal.js</include>
                   <include>classes/views/MDXModal.js</include>
                   <include>classes/views/SelectionsModal.js</include>
                   <include>classes/views/DrillthroughModal.js</include>
+                  <include>classes/views/DrillAcrossModal.js</include>
                   <include>classes/views/PermissionsModal.js</include>
-                  <include>classes/views/LoginForm.js</include>
                   <include>classes/views/DemoLoginForm.js</include>
+                  <include>classes/views/LoginForm.js</include>
                   <include>classes/views/AboutModal.js</include>
                   <include>classes/views/AddFolderModal.js</include>
                   <include>classes/views/FilterModal.js</include>
@@ -81,6 +82,7 @@
                   <include>classes/views/OpenQuery.js</include>
                   <include>classes/views/SaveQuery.js</include>
                   <include>classes/views/OpenDialog.js</include>
+                  <include>classes/views/Tab.js</include>
                   <include>classes/models/Repository.js</include>
                   <include>classes/models/Properties.js</include>
                   <include>classes/models/Result.js</include>
@@ -93,11 +95,13 @@
                   <include>classes/Saiku.js</include>
                   <include>classes/adapters/SaikuServer.js</include>
                   <include>classes/routers/QueryRouter.js</include>
+
                   <include>classes/plugins/Statistics/plugin.js</include>
                   <include>classes/plugins/I18n/plugin.js</include>
                   <include>classes/plugins/BIServer/plugin.js</include>
-                  <include>classes/plugins/Buckets/plugin.js</include>
+                  <include>classes/plugins/Buckets/plugin.js</include> 
                   <include>classes/plugins/CCC_Chart/plugin.js</include>
+                  <include>classes/plugins/Fullscreen/plugin.js</include>
               </includes>
             </aggregation>
               <aggregation>
@@ -113,7 +117,7 @@
           </aggregations>
         </configuration>
       </plugin>
--->
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -136,8 +140,9 @@
                                         <exclude name=".gitignore" />
                                     </fileset>
 								</copy>
-<!--
+
                                 <copy file="target/saiku.min.js" tofile="target/saiku-ui/saiku.min.js"/>
+<!--
                                 <copy file="target/saiku.min.js.gz" tofile="target/saiku-ui/saiku.min.js.gz"/>
 
                                 <copy todir="target/saiku-ui/doc/">
