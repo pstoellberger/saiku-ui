@@ -759,7 +759,7 @@
                     <% if (typeof measure["visible"] == "undefined" || measure["visible"]) { %>
                         <% if(typeof measure.calculated == "undefined" || (measure.calculated == false || allMeasures)) { %>
                             <li> &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input type="checkbox" class="check_level" value="<%= measure.uniqueName %>" key="Measures###"> <%= measure.caption %></input>
+                                    <input type="checkbox" class="check_level" value="<%= measure.uniqueName %>" key="Measures###<%= measure.name %>"> <%= measure.caption %></input>
                                     </li>
                         <% } %>
                     <% } %>
