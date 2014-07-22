@@ -74,6 +74,7 @@ var Workspace = Backbone.View.extend({
         if (args && args.query) {
             this.query = args.query;
             this.query.workspace = this;
+            Saiku.ui.block("Loading Query....");
             this.query.save({}, { success: this.init_query , error: function() {
                 Saiku.ui.unblock();
                 if ( $('body').find('.error_loading_query').length < 1) {
@@ -309,6 +310,7 @@ var Workspace = Backbone.View.extend({
     
     init_query: function(isNew) {
         var self = this;
+        Saiku.ui.unblock();
         try 
         {
 

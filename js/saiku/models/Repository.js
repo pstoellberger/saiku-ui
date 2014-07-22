@@ -114,6 +114,9 @@ var Repository = Backbone.Collection.extend({
     
     url: function() {
         var segment = repoPathUrl() + "?type=saiku";
+        if (Settings.REPO_BASE) {
+            segment += "&path=" + Settings.REPO_BASE;
+        }
         return segment;
     }
 });
