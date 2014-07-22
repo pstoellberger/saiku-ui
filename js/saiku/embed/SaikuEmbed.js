@@ -79,7 +79,7 @@ var SaikuCall = {
   file: null,
   render: 'table', // table | chart
   mode: 'null', // table: sparkline, sparkbar - chart: line, bar, treemap, ...
-  formatter: 'flatteneder', // should be left unless you want an hierarchical resultset
+  formatter: 'flattened', // should be left unless you want an hierarchical resultset
   htmlObject: "saiku",
   // table specific options for lazy loading table, doesn't quite work yet, so dont enable yet
   /*
