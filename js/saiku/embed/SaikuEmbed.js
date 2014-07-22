@@ -58,7 +58,7 @@ var isIE = (function(){
 
 }());
 
-if ($.blockUI && !Dashboards) {
+if ($.blockUI && typeof Dashboards === "undefined") {
     $.blockUI.defaults.css = { "font-size" : "14px"};
     $.blockUI.defaults.overlayCSS = {};
     $.blockUI.defaults.blockMsgClass = 'processing';
@@ -79,7 +79,7 @@ var SaikuCall = {
   file: null,
   render: 'table', // table | chart
   mode: 'null', // table: sparkline, sparkbar - chart: line, bar, treemap, ...
-  formatter: 'flattened', // should be left unless you want an hierarchical resultset
+  formatter: 'flatteneder', // should be left unless you want an hierarchical resultset
   htmlObject: "saiku",
   // table specific options for lazy loading table, doesn't quite work yet, so dont enable yet
   /*
@@ -92,7 +92,8 @@ var SaikuCall = {
 
   }
 
-}
+};
+
 var SaikuRenderer = {
   "table" : SaikuTableRenderer,
   "chart" : SaikuChartRenderer
@@ -135,9 +136,9 @@ SaikuClient.prototype.execute = function(usercall) {
 );
 
   
-  if ($.blockUI && !Dashboards) {
+  if ($.blockUI && typeof Dashboards === "undefined") {
     $(call.htmlObject).block({ 
-                message: '<span class="saiku_logo" style="float:left">&nbsp;&nbsp;</span> Executing....' 
+                message: '<span class="saiku_logo" style="float:left">&nbsp;&nbsp;</span> Executing....'
     });
   }
   var params = {

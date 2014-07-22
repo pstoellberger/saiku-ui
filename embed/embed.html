@@ -43,10 +43,10 @@
         <script type="text/javascript" src="../js/saiku/render/SaikuChartRenderer.js"></script>
         <script type="text/javascript" src="../js/saiku/embed/SaikuEmbed.js"></script>
 
-        <div id='saiku' class='workspace_results' style="height:330px;">
+        <div id='saiku' class='workspace_results' style="height:600px;float:left;">
         </div>
 
-        <div id='saiku2' class='workspace_results' style="height:500px;">
+        <div id='saiku2' class='workspace_results' style="height:600px;float:left;">
         </div>
 
 
@@ -60,7 +60,7 @@ var myClient = new SaikuClient({
 });
 
 myClient.execute({
-    file: "Examples/table.saiku",
+    file: "Examples/pie.saiku",
     htmlObject: "#saiku",
     render: "table",
     params: {
@@ -75,6 +75,7 @@ myClient.execute({
     render: "chart",
     mode: "heatgrid",
     chartDefinition: {
+        width: 900,
         colors: ['grey','red','blue'],
         extensionPoints: {
             xAxisLabel_textAngle: - Math.PI/3,

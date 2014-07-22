@@ -142,6 +142,7 @@
 								</copy>
 
                                 <copy file="target/saiku.min.js" tofile="target/saiku-ui/saiku.min.js"/>
+                                <copy file="target/saiku.embed.min.js" tofile="target/saiku-ui/saiku.embed.min.js"/>
 <!--                                <copy file="target/saiku.min.js.gz" tofile="target/saiku-ui/saiku.min.js.gz"/>
 -->
 <!--
