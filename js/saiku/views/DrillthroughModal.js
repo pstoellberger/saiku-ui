@@ -69,6 +69,7 @@ var DrillthroughModal = Modal.extend({
         var cubeModel = this.workspace.metadata;
         var dimensions = null;
         var measures = null; 
+        var key = this.workspace.selected_cube;
 
         if (cubeModel && cubeModel.has('data')) {
             dimensions = cubeModel.get('data').dimensions;
