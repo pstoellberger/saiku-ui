@@ -337,7 +337,13 @@ var WorkspaceToolbar = Backbone.View.extend({
 
                     positions = _.uniq(positions);
                     if (positions.length > 0) {
-                        self.workspace.query.action.put("/zoomin", { success: self.workspace.sync_query,
+                        self.workspace.query.action.put("/zoomin", { success: function(model, response) {
+                            self.workspace.query.parse(response);
+                            self.workspace.unblock();
+                            self.workspace.sync_query();
+                            Saiku.ui.unblock();
+                            self.workspace.query.run();
+                        },
                                 data: { selections : JSON.stringify(positions) }
                             });
                     }
@@ -426,6 +432,10 @@ var WorkspaceToolbar = Backbone.View.extend({
 
     swap_axes_on_dropzones: function(model, response) {
         this.workspace.query.parse(response);
+        this.workspace.unblock();
+        this.workspace.sync_query();
+        Saiku.ui.unblock();
+
         /*
         $columns = $(this.workspace.drop_zones.el).find('.columns')
             .children()
@@ -447,9 +457,6 @@ var WorkspaceToolbar = Backbone.View.extend({
             $(this.workspace).find('fields_list.ROWS .limit').addClass('on');
         }
         */
-        this.workspace.unblock();
-        this.workspace.sync_query();
-        Saiku.ui.unblock();
     },
     
     show_mdx: function(event) {

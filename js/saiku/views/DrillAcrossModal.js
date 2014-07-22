@@ -41,6 +41,7 @@ var DrillAcrossModal = DrillthroughModal.extend({
             self.workspace.query.parse(response);
             self.workspace.unblock();
             self.workspace.sync_query();
+            self.workspace.query.run();
         }, error: function(a, b, errorThrown) {
             self.workspace.unblock();
             var text = "";
