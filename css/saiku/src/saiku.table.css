@@ -54,6 +54,7 @@
     border-top: 1px solid #d5d5d5;
     background: #f9f9f9;
     white-space: nowrap;
+    text-align: left;
 }
 .workspace_results table th.row_total {
 	border-left: 1px none #d5d5d5;
