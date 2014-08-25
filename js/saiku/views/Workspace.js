@@ -642,7 +642,8 @@ var Workspace = Backbone.View.extend({
 
     update_parameters: function () {
         var self = this;
-        if (!Settings.ALLOW_PARAMETERS)
+        $(this.el).find('.parameter_input').html("");
+        if (!Settings.ALLOW_PARAMETERS || Settings.MODE === "view" || self.viewState === 'view')
             return;
 
         var paramDiv = "<span class='i18n'>Parameters</span>: ";
@@ -739,6 +740,7 @@ var Workspace = Backbone.View.extend({
                 $(this.toolbar.el).find(".auto, .toggle_fields, .toggle_sidebar,.switch_to_mdx").parent().hide();
         }
         this.viewState = target;
+        this.update_parameters();
         $(window).trigger('resize');
 
     },

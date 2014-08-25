@@ -682,13 +682,13 @@ textarea, select {
 }
 .dialog_selections {
 	min-width: 800px !important;
-    height: 490px !important;
+    height: 530px !important;
 }
 .dialog_selections .dialog_icon {
 	display: none;
 }
 .dialog_selections .dialog_body {
-    height: 410px;
+    height: 450px;
     position: relative;
 }
 
