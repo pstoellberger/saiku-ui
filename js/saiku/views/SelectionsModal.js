@@ -44,6 +44,7 @@ var SelectionsModal = Modal.extend({
     members_limit: Settings.MEMBERS_LIMIT,
     members_search_limit: Settings.MEMBERS_SEARCH_LIMIT,
     members_search_server: false,
+    selection_type: "INCLUSION",
     
     initialize: function(args) {
         // Initialize properties
@@ -100,6 +101,7 @@ var SelectionsModal = Modal.extend({
         if (hierarchy && hierarchy.levels.hasOwnProperty(lName)) {
             level = hierarchy.levels[lName];
         }
+
         if (Settings.ALLOW_PARAMETERS) {
             if (level) {
                 var pName = level.selection ? level.selection.parameterName : null;
@@ -109,6 +111,7 @@ var SelectionsModal = Modal.extend({
             }
             $(this.el).find('.parameter').removeClass('hide');
         }
+
 
         var showTotalsEl = $(this.el).find('#show_totals');
         showTotalsEl.val('');
@@ -213,6 +216,7 @@ var SelectionsModal = Modal.extend({
             var hierarchy = self.workspace.query.helper.getHierarchy(hName);
             if (hierarchy && hierarchy.levels.hasOwnProperty(lName)) {
                 this.selected_members = hierarchy.levels[lName].selection ? hierarchy.levels[lName].selection.members : [];
+                this.selection_type = hierarchy.levels[lName].selection ? hierarchy.levels[lName].selection.type : "INCLUSION";
             }
             var used_members = [];
     
@@ -326,6 +330,13 @@ var SelectionsModal = Modal.extend({
                 });
 
         $(this.el).find('.filterbox').autocomplete("enable");
+        if (this.selection_type === "EXCLUSION") {
+            $(this.el).find('.selection_type_inclusion').prop('checked', false);
+            $(this.el).find('.selection_type_exclusion').prop('checked', true);
+        } else {
+            $(this.el).find('.selection_type_inclusion').prop('checked', true);
+            $(this.el).find('.selection_type_exclusion').prop('checked', false);
+        }
 
 		// Translate
 		Saiku.i18n.translate();
@@ -339,7 +350,7 @@ var SelectionsModal = Modal.extend({
         $(args.modal.el).parents('.ui-dialog')
             .css({ width: width, left: "inherit", margin:"0", height: 530 })
             .offset({ left: left});
-
+            
         $('#filter_selections').attr("disabled", false);
         $(this.el).find('a[href=#save]').focus();
         $(this.el).find('a[href=#save]').blur();
@@ -454,7 +465,10 @@ var SelectionsModal = Modal.extend({
                 if (totalsFunction) {
                     hierarchy.levels[lName]["aggregators"].push(totalsFunction);
                 }
-                hierarchy.levels[lName].selection = { "type": "INCLUSION", "members": updates };
+                var selectionType = $(self.el).find('input.selection_type:checked').val();
+                selectionType = selectionType ? selectionType : "INCLUSION";
+                console.log("selection type: " + selectionType);
+                hierarchy.levels[lName].selection = { "type": selectionType, "members": updates };
                 if (Settings.ALLOW_PARAMETERS && parameterName) {
                     hierarchy.levels[lName].selection["parameterName"] = parameterName;
                     var parameters = self.workspace.query.helper.model().parameters;
