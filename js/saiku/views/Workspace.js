@@ -643,7 +643,7 @@ var Workspace = Backbone.View.extend({
     update_parameters: function () {
         var self = this;
         $(this.el).find('.parameter_input').html("");
-        if (!Settings.ALLOW_PARAMETERS || Settings.MODE === "view" || self.viewState === 'view')
+        if (!self.hasOwnProperty('query') || !Settings.ALLOW_PARAMETERS || Settings.MODE === "view" || self.viewState === 'view')
             return;
 
         var paramDiv = "<span class='i18n'>Parameters</span>: ";
