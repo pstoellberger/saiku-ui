@@ -58,7 +58,7 @@ var QueryRouter = Backbone.Router.extend({
             }
         };
 
-        var repositoryFile = new Repository({}, { dialog: dialog }).fetch({ async: false, data: { path: options.file }});
+        var repositoryFile = new Repository({}, { dialog: dialog, file: options.file }).fetch({ async: false, data: { path: options.file }});
 
         
 

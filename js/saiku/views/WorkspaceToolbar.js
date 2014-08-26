@@ -655,8 +655,10 @@ var WorkspaceToolbar = Backbone.View.extend({
             };
 
             var lazyDetector = function() { _.delay(parameterDetector, 1000); };
-            self.editor.getSession().off('change', lazyDetector);
-            self.editor.getSession().on('change', lazyDetector);
+            if (self.editor) {
+                self.editor.getSession().off('change', lazyDetector);
+                self.editor.getSession().on('change', lazyDetector);
+            }
             self.workspace.update_parameters();
         }
 

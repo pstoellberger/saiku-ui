@@ -99,10 +99,13 @@ var SavedQuery = Backbone.Model.extend({
  */
 var Repository = Backbone.Collection.extend({
     model: SavedQuery,
-    
+    file: null,
     initialize: function(args, options) {
         if (options && options.dialog) {
             this.dialog = options.dialog;
+        }
+        if (options && options.file) {
+            this.file = options.file
         }
     },
     
@@ -114,7 +117,7 @@ var Repository = Backbone.Collection.extend({
     
     url: function() {
         var segment = repoPathUrl() + "?type=saiku";
-        if (Settings.REPO_BASE) {
+        if (Settings.REPO_BASE && !this.file) {
             segment += "&path=" + Settings.REPO_BASE;
         }
         return segment;
