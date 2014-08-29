@@ -74,6 +74,7 @@
                   <include>classes/views/AddFolderModal.js</include>
                   <include>classes/views/FilterModal.js</include>
                   <include>classes/views/CustomFilterModal.js</include>
+                  <include>classes/views/MeasuresModal.js</include
                   <include>classes/views/QueryToolbar.js</include>
                   <include>classes/views/WorkspaceToolbar.js</include>
                   <include>classes/views/WorkspaceDropZone.js</include>
@@ -99,7 +100,6 @@
                   <include>classes/plugins/Statistics/plugin.js</include>
                   <include>classes/plugins/I18n/plugin.js</include>
                   <include>classes/plugins/BIServer/plugin.js</include>
-                  <include>classes/plugins/Buckets/plugin.js</include> 
                   <include>classes/plugins/CCC_Chart/plugin.js</include>
                   <include>classes/plugins/Fullscreen/plugin.js</include>
               </includes>
