@@ -74,7 +74,7 @@
                   <include>classes/views/AddFolderModal.js</include>
                   <include>classes/views/FilterModal.js</include>
                   <include>classes/views/CustomFilterModal.js</include>
-                  <include>classes/views/MeasuresModal.js</include
+                  <include>classes/views/MeasuresModal.js</include>
                   <include>classes/views/QueryToolbar.js</include>
                   <include>classes/views/WorkspaceToolbar.js</include>
                   <include>classes/views/WorkspaceDropZone.js</include>
