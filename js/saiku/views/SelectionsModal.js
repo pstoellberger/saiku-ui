@@ -127,6 +127,7 @@ var SelectionsModal = Modal.extend({
             this.show_totals_option = '';
         }
         showTotalsEl.val(this.show_totals_option);
+        showTotalsEl.removeAttr("disabled");
 
         $(this.el).find('#use_result').attr('checked', this.use_result_option);
         $(this.el).find('.search_limit').text(this.members_search_limit);
@@ -467,7 +468,6 @@ var SelectionsModal = Modal.extend({
                 }
                 var selectionType = $(self.el).find('input.selection_type:checked').val();
                 selectionType = selectionType ? selectionType : "INCLUSION";
-                console.log("selection type: " + selectionType);
                 hierarchy.levels[lName].selection = { "type": selectionType, "members": updates };
                 if (Settings.ALLOW_PARAMETERS && parameterName) {
                     hierarchy.levels[lName].selection["parameterName"] = parameterName;
