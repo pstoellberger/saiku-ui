@@ -507,6 +507,7 @@ textarea, select {
     text-align: left !important;
     padding: 0.2em !important;
     line-height: 16px !important;
+    z-index: 99999;
 }
 
 .ui-dialog.ui-draggable-dragging .form_button {
@@ -1653,6 +1654,7 @@ span.cancel_search:hover {
 }
 .RepositoryObjects li.query {
     margin-left: 16px;
+    z-index: 10000;
 }
 
 
@@ -1874,4 +1876,8 @@ span.cancel_search:hover {
     height: 18px;
     width: 20px;
     -moz-background-origin: 0px 2px;
+}
+
+.drop-over {
+    background-color: #F0F8FF;
 }

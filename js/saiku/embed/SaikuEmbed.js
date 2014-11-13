@@ -81,6 +81,7 @@ var SaikuCall = {
   mode: 'null', // table: sparkline, sparkbar - chart: line, bar, treemap, ...
   formatter: 'flattened', // should be left unless you want an hierarchical resultset
   htmlObject: "saiku",
+  zoom: true,
   // table specific options for lazy loading table, doesn't quite work yet, so dont enable yet
   /*
   batch:              true, 
@@ -150,7 +151,12 @@ SaikuClient.prototype.execute = function(usercall) {
       contentType:  'application/x-www-form-urlencoded',
       dataType:     "json",
       success:      function(data, textStatus, jqXHR) {
-        
+        var renderMode = data.query.properties['saiku.ui.render.mode'] ? data.query.properties['saiku.ui.render.mode'] :  call.render;
+        var mode =  data.query.properties['saiku.ui.render.type'] ? data.query.properties['saiku.ui.render.type'] : call.mode;
+
+        call['render'] = renderMode;
+        call['mode'] = mode;
+
             if (call.render in SaikuRenderer) {
                   var r = new SaikuRenderer[call.render](data, call);
                   r.render();
