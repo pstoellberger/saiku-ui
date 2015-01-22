@@ -116,6 +116,8 @@ SaikuClient.prototype.error = function(jqXHR, textStatus, errorThrown) {
 
 SaikuClient.prototype.execute = function(usercall) {
   var self = this;
+  var userprops = usercall ? usercall : {};
+
   var call = _.extend({},
     SaikuCall,
     usercall
@@ -146,7 +148,7 @@ SaikuClient.prototype.execute = function(usercall) {
                     // path ? "rest/saiku/embed/"
       url:          client.server + (client.path ? client.path : "") + "/export/saiku/json",
       type:         'GET',
-      cache:        false,
+      cache:        true,
       data:         parameters,
       contentType:  'application/x-www-form-urlencoded',
       dataType:     "json",
@@ -154,8 +156,8 @@ SaikuClient.prototype.execute = function(usercall) {
         var renderMode = data.query.properties['saiku.ui.render.mode'] ? data.query.properties['saiku.ui.render.mode'] :  call.render;
         var mode =  data.query.properties['saiku.ui.render.type'] ? data.query.properties['saiku.ui.render.type'] : call.mode;
 
-        call['render'] = renderMode;
-        call['mode'] = mode;
+        call['render'] = userprops.render ? userprops.render : renderMode;
+        call['mode'] = userprops.mode ? userprops.mode : mode;
 
             if (call.render in SaikuRenderer) {
                   var r = new SaikuRenderer[call.render](data, call);

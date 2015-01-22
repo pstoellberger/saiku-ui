@@ -1,4 +1,22 @@
 
+_.mixin({
+  extendNonNull: function(obj) {
+    _.each(_.rest(arguments,1), function(source) {
+      if (source) {
+        for (var prop in source) {
+          if( _.isObject(source[prop]) && _.isObject(obj[prop])){
+             obj[prop] = _.extendNonNull(obj[prop], source[prop]);
+          }
+          else if( !_.isNull(source[prop])){
+             obj[prop] = source[prop];
+          }
+        }
+      }
+    });
+    return obj;
+  }
+});
+
 var SaikuChartRenderer = function(data, options) {
     this.rawdata = data;
     this.cccOptions = {};
@@ -126,56 +144,7 @@ SaikuChartRenderer.prototype.render = function() {
 
 SaikuChartRenderer.prototype.switch_chart = function(key) {
 
-    var keyOptions =
-    {
-                "stackedBar" : {
-                    type: "BarChart",
-                    stacked: true
-                },
-                "bar" : {
-                    type: "BarChart"
-                },
-                "multiplebar" : {
-                    type: "BarChart",
-                    multiChartIndexes: [1],
-                    dataMeasuresInColumns: true,
-                    orientation: "vertical",
-                    smallTitlePosition: "top",
-                    multiChartMax: 30,
-                    multiChartColumnsMax: Math.floor( this.cccOptions.width / 200),
-                    smallWidth: 200,
-                    smallHeight: 150
-                },
-                "line" : {
-                    type: "LineChart"
-                }, 
-                "pie" : {
-                    type: "PieChart",
-                    multiChartIndexes: [0] // ideally this would be chosen by the user (count, which)
-                },
-                "heatgrid" : {
-                    type: "HeatGridChart"
-                },
-                "stackedBar100" : {
-                    type: "NormalizedBarChart"
-                },
-                "area" : {
-                    type: "StackedAreaChart"
-                },
-                "dot" : {
-                    type: "DotChart"
-                },
-                "waterfall" : {
-                    type: "WaterfallChart"
-                },
-                "treemap" : {
-                    type: "TreemapChart"
-                },
-                "sunburst" : {
-                    type: "SunburstChart"
-                    //multiChartColumnsMax: Math.floor( this.cccOptions.width / 200)
-                }
-    };
+    var keyOptions = this.cccOptionsKeyMap;
 
 
     if (key == "suanburst") {
@@ -263,9 +232,58 @@ SaikuChartRenderer.prototype.sunburst = function() {
         this.chart = vis;
 };
 
+SaikuChartRenderer.prototype.cccOptionsKeyMap = {
+                "stackedBar" : {
+                    type: "BarChart",
+                    stacked: true
+                },
+                "bar" : {
+                    type: "BarChart"
+                },
+                "multiplebar" : {
+                    type: "BarChart",
+                    multiChartIndexes: [1],
+                    dataMeasuresInColumns: true,
+                    orientation: "vertical",
+                    smallTitlePosition: "top",
+                    multiChartMax: 30,
+                    multiChartColumnsMax: 4,
+                    smallWidth: 200,
+                    smallHeight: 150
+                },
+                "line" : {
+                    type: "LineChart"
+                }, 
+                "pie" : {
+                    type: "PieChart",
+                    multiChartIndexes: [0] // ideally this would be chosen by the user (count, which)
+                },
+                "heatgrid" : {
+                    type: "HeatGridChart"
+                },
+                "stackedBar100" : {
+                    type: "NormalizedBarChart"
+                },
+                "area" : {
+                    type: "StackedAreaChart"
+                },
+                "dot" : {
+                    type: "DotChart"
+                },
+                "waterfall" : {
+                    type: "WaterfallChart"
+                },
+                "treemap" : {
+                    type: "TreemapChart"
+                },
+                "sunburst" : {
+                    type: "SunburstChart"
+                    //multiChartColumnsMax: Math.floor( this.cccOptions.width / 200)
+                }
+};
 
 // Default static style-sheet
-SaikuChartRenderer.prototype.cccOptionsDefault = {
+SaikuChartRenderer.prototype['cccOptionsDefault'] = {
         Base: {
             animate: false,
             selectable: true,
@@ -338,7 +356,32 @@ SaikuChartRenderer.prototype.cccOptionsDefault = {
                 leaf_lineWidth : 2
             },
             layoutMode: "slice-and-dice",
-            valuesVisible: true
+            valuesVisible: true,
+            legend: { 
+                scenes: {
+                    item: {
+                        labelText: function() {
+                            var indent = "";
+                            var group  = this.group;
+                            if(group) {
+                                var depth = group.depth;
+                                // 0 ""
+                                // 1 "text"
+                                // 2 "└ text"
+                                // 3 "  └ text"
+                                switch(depth) {
+                                    case 0: return "";
+                                    case 1: break;
+                                    case 2: indent = " └ "; break;
+                                    default:
+                                        indent = new Array(2*(depth-2) + 1).join(" ") + " └ ";
+                                }
+                            }
+                            return indent + this.base();
+                        }
+                    }
+                }
+            }
         },
         SunburstChart: {
             valuesVisible: false,
@@ -396,15 +439,19 @@ SaikuChartRenderer.prototype.define_chart = function(displayOptions) {
             this.process_data_tree( { data : this.rawdata }, true, true);
         }
         var self = this;
-        var workspaceResults = (this.adjustSizeTo ? $(this.adjustSizeTo) : $(this.el));
+        
         var isSmall = (this.data != null && this.data.height < 80 && this.data.width < 80);
         var isMedium = (this.data != null && this.data.height < 300 && this.data.width < 300);
         var isBig = (!isSmall && !isMedium);
         var animate = false;
         var hoverable =  isSmall;
+        var runtimeWidth = 0, runtimeHeight = 0;
 
-        var runtimeWidth = workspaceResults.width() - 40;
-        var runtimeHeight = workspaceResults.height() - 40;
+        var workspaceResults = (this.adjustSizeTo ? $(this.adjustSizeTo) : $(this.el));
+        if (workspaceResults) {
+            runtimeWidth = workspaceResults.width() - 40;
+            runtimeHeight = workspaceResults.height() - 40;
+        }
 
         var runtimeChartDefinition = _.clone(this.cccOptions);
 
@@ -420,6 +467,10 @@ SaikuChartRenderer.prototype.define_chart = function(displayOptions) {
         }
         if (runtimeHeight > 0) {
             runtimeChartDefinition.height = runtimeHeight;
+        }
+
+        if ("multiplebar" === self.type) {
+            runtimeChartDefinition['multiChartColumnsMax'] = Math.floor(runtimeChartDefinition.width / runtimeChartDefinition.smallWidth);
         }
 
          if (isBig) {
@@ -526,30 +577,9 @@ SaikuChartRenderer.prototype.define_chart = function(displayOptions) {
         }, this.chartDefinition);
 
          if (self.zoom) {
-            runtimeChartDefinition = _.extend(runtimeChartDefinition, zoomDefinition);
+            runtimeChartDefinition = _.extendNonNull(runtimeChartDefinition, zoomDefinition);
          }
 
-        if (runtimeChartDefinition.type == "TreemapChart") {
-            runtimeChartDefinition.legend.scenes.item.labelText = function() {
-                 var indent = "";
-                    var group  = this.group;
-                    if(group) {
-                        var depth = group.depth;
-                        // 0 ""
-                        // 1 "text"
-                        // 2 "└ text"
-                        // 3 "  └ text"
-                        switch(depth) {
-                            case 0: return "";
-                            case 1: break;
-                            case 2: indent = " └ "; break;
-                            default:
-                                indent = new Array(2*(depth-2) + 1).join(" ") + " └ ";
-                        }
-                    }
-                    return indent + this.base();
-            };
-        }
         this.chart = new pvc[runtimeChartDefinition.type](runtimeChartDefinition);
         this.chart.setData(this.data, {
             crosstabMode: true,
@@ -641,7 +671,15 @@ SaikuChartRenderer.prototype.process_data_tree = function(args, flat, setdata) {
                             }
                             lowest_level = field - 1;
                         }
-                        if (cellset[row][field].type == "COLUMN_HEADER") {
+
+                        if (cellset[row][field].type == "COLUMN_HEADER" && cellset[row][field].properties && "sql" === cellset[row][field].properties.source) {
+                            data.metadata.push({
+                                    colIndex: field,
+                                    colType: cellset[row][field].properties.type,
+                                    colName: cellset[row][field].value
+                                });
+                            data_start = row+1;
+                        } else if (cellset[row][field].type == "COLUMN_HEADER") {
                             var lowest_col_header = 0;
                             var colheader = [];
                             while(lowest_col_header <= row) {
