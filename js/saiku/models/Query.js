@@ -111,6 +111,9 @@ var Query = Backbone.Model.extend({
                 }
             }
         }
+        if (exModel.queryType == "SQL") {
+            validated = true;
+        }
         if (!validated) {
             this.workspace.table.clearOut();
             $(this.workspace.processing).html(errorMessage).show();
