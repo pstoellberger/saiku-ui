@@ -47,6 +47,6 @@ var DeleteRepositoryObject = Modal.extend({
     
     error: function() {
         $(this.el).find('dialog_body')
-            .html("Could not delete repository object");
+            .html('<span class="i18n">Could not delete repository object</span>');
     }
 });

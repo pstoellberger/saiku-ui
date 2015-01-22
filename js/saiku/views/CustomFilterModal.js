@@ -77,7 +77,7 @@ var CustomFilterModal = Modal.extend({
                 $(self.el).find('.function').val(self.func);
                 self.switch_function({ target : $(self.el).find('.function')});
                 $(self.el).find('.n').val(self.n);
-                if (self.isMdx == true && self.sortliteral != null) {
+                if (self.isMdx === true && self.sortliteral !== null) {
                     $(this.el).find('.type').val('custom');
                     $(this.el).find('.sortingoption').html('').html("<textarea class='sortliteral'>" + self.sortliteral + "</textarea>");    
                 }
@@ -96,7 +96,7 @@ var CustomFilterModal = Modal.extend({
 
     build_measures_list: function() {
         var self = this;
-        if (this.measure_list != null)
+        if (this.measure_list !== null)
             return "";
         var tmpl = "<select class='sortliteral'>";
         _.each(this.measures, function(measure) {
@@ -113,11 +113,11 @@ var CustomFilterModal = Modal.extend({
 
     switch_function: function(event) {
         var val = $(event.target).val();
-        if (typeof val == "undefined" || val == "") {
+        if (typeof val == "undefined" || val === "") {
             $(this.el).find('.filter_details').hide();
         } else {
             var ntype = val.replace('Top','').replace('Bottom','');
-            $(this.el).find('.ntype').html(ntype + ":")
+            $(this.el).find('.ntype').html(ntype + ":");
             $(this.el).find('.filter_details').show();
             $(this.el).find('.sortingoption').html('').html(this.measure_list);
         }
@@ -148,10 +148,10 @@ var CustomFilterModal = Modal.extend({
         if (typeof this.n == "undefined" || !this.n) {
             alert_msg += "You have to enter a numeric for N! ";
         }
-        if (typeof this.sortliteral == "undefined" || !this.sortliteral || this.sortliteral == "") {
+        if (typeof this.sortliteral == "undefined" || !this.sortliteral || this.sortliteral === "") {
             alert_msg += "You have to enter a MDX expression for the sort literal! ";
         }
-        if (alert_msg != "") {
+        if (alert_msg !== "") {
             alert(alert_msg);
         } else {
             self.success(this.func, this.n, this.sortliteral);

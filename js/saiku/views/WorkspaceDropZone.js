@@ -174,7 +174,7 @@ var WorkspaceDropZone = Backbone.View.extend({
     update_dropzones: function() {
         $(this.workspace.el).find('.fields_list_body').each(function(idx, ael) {
             var $axis = $(ael);
-            if ($axis.find('ul.connectable li.selection, ul.connectable li.d_measure').length == 0) {
+            if ($axis.find('ul.connectable li.selection, ul.connectable li.d_measure').length === 0) {
                 $axis.siblings('.clear_axis').addClass('hide');
             } else {
                 $axis.siblings('.clear_axis').removeClass('hide');
@@ -363,13 +363,13 @@ var WorkspaceDropZone = Backbone.View.extend({
                     totalFunction = a.aggregators[0];
                 }
 
-                if (func != null && sortliteral == null) {
+                if (func !== null && sortliteral === null) {
                     topHl = func + "###SEPARATOR###" + n;
-                } else if (func != null && sortliteral != null && n != null) {
+                } else if (func !== null && sortliteral !== null && n !== null) {
                     topHl = "custom";
                 }
 
-                if (isSort && sortOrder != null) {
+                if (isSort && sortOrder !== null) {
                     sortHl = "customsort";
                 }
 
@@ -418,7 +418,7 @@ var WorkspaceDropZone = Backbone.View.extend({
                                 "customtop" : {name: "Custom Limit...", i18n: true },
                                 "clearlimit" : {name: "Clear Limit", i18n: true }
                          }},
-                        "sort" : {name: "Sort", items:
+                        "sort" : {name: "Sort", i18n: true, items:
                         {
                             "ASCQuick": {name: "Ascending" , i18n: true, items: addFun(items, "ASC") },
                             "DESCQuick": {name: "Descending", i18n: true, items: addFun(items, "DESC")},
@@ -427,7 +427,7 @@ var WorkspaceDropZone = Backbone.View.extend({
                             "customsort" : { name: "Custom...", i18n: true },
                             "clearsort" : {name: "Clear Sort", i18n: true }
                         }},
-                        "grand_totals" : {name: "Grand totals", items:
+                        "grand_totals" : {name: "Grand totals", i18n: true, items:
                         {
                             "show_totals_not": {name: "None", i18n: true},
                             "show_totals_sum": {name: "Sum", i18n: true},

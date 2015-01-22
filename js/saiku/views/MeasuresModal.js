@@ -91,7 +91,7 @@ var MeasuresModal = Modal.extend({
         if (typeof measure_formula == "undefined" || !measure_formula || measure_formula === "") {
             alert_msg += "You have to enter a MDX formula for the calculated measure! ";
         }
-        if (alert_msg != "") {
+        if (alert_msg !== "") {
             alert(alert_msg);
         } else {
             var m = { name: measure_name, formula: measure_formula, properties: {}, uniqueName: "[Measures]." + measure_name };

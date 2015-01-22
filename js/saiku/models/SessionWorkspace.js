@@ -33,7 +33,7 @@ var SessionWorkspace = Backbone.Model.extend({
             if (!Settings.LOCALSTORAGE_EXPIRATION || Settings.LOCALSTORAGE_EXPIRATION === 0) {
                 localStorage.clear();
             }
-            if (localStorage.getItem('expiration') && !(localStorage.getItem('expiration') > (new Date()).getTime())) {
+            if (localStorage.getItem('expiration') && localStorage.getItem('expiration') <= (new Date()).getTime()) {
                 localStorage.clear();
             } else if (!localStorage.getItem('saiku-version') || (localStorage.getItem('saiku-version') !== Settings.VERSION) ) {
                 localStorage.clear();

@@ -117,16 +117,16 @@ Backbone.sync = function(method, model, options) {
       Saiku.ui.unblock();  
       options.success(data, textStatus, jqXHR);
     };
-    var async = true
+    var async = true;
     if (options.async === false) {
       async = false;
     }
-    var dataType = 'json'
+    var dataType = 'json';
     if (typeof options.dataType != "undefined") {
       dataType = options.dataType;
     }
 
-    var contentType = 'application/x-www-form-urlencoded'
+    var contentType = 'application/x-www-form-urlencoded';
     if (typeof options.contentType != "undefined") {
       contentType = options.contentType;
     }

@@ -50,6 +50,11 @@ textarea:focus {
   border-color:#666;
   outline: 1;
 }
+input[disabled],
+select[disabled] {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
 select { background-color:#fff; border-width:1px; border-style:solid; }
 
 input[type=text], input[type=password],

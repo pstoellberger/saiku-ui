@@ -324,7 +324,7 @@ SaikuChartRenderer.prototype['cccOptionsDefault'] = {
             multiChartMax: 30,
             smallTitleFont: "bold 14px sans-serif",
             valuesVisible: true,
-            valuesMask: "{value.percent}",
+			valuesMask: "{category} / {value.percent}",
             explodedSliceRadius: "10%",
             extensionPoints: {
                 slice_innerRadiusEx: '40%',
@@ -511,7 +511,7 @@ SaikuChartRenderer.prototype.define_chart = function(displayOptions) {
                     }
                 },
                 userSelectionAction: function(selectingDatums) {
-                    if (selectingDatums.length == 0) {
+                    if (selectingDatums.length === 0) {
                         return [];
                     }
 
@@ -637,11 +637,11 @@ SaikuChartRenderer.prototype.process_data_tree = function(args, flat, setdata) {
             return;
         }
 
-        if (args.data != null && args.data.error != null) {
+        if (args.data !== null && args.data.error !== null) {
             return;
         }        
         // Check to see if there is data
-        if (args.data == null || (args.data.cellset && args.data.cellset.length === 0)) {
+        if (args.data === null || (args.data.cellset && args.data.cellset.length === 0)) {
             return;
         }
 
@@ -724,7 +724,7 @@ SaikuChartRenderer.prototype.process_data_tree = function(args, flat, setdata) {
 
                         }
                         if (cellset[row] && cellset[row][labelCol].value !== 'null') {
-                            if (labelCol == 0) {
+                            if (labelCol === 0) {
                                 for (var xx = 0; xx <= lowest_level; xx++) {
                                     rowlabels[xx] = null;
                                 }
@@ -747,7 +747,7 @@ SaikuChartRenderer.prototype.process_data_tree = function(args, flat, setdata) {
                     for (var col = lowest_level + 1, colLen = cellset[row].length; col < colLen; col++) {
                         var cell = cellset[row][col];
                         var value = cell.value || 0;
-                        var maybePercentage = (value != 0);
+                        var maybePercentage = (value !== 0);
                         // check if the resultset contains the raw value, if not try to parse the given value
                         var raw = cell.properties.raw;
                         if (raw && raw !== "null") {

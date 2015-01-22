@@ -70,6 +70,10 @@ var Chart = Backbone.View.extend({
         var form = $('#svgChartPseudoForm');
         form.find('.type').val(type);
         form.find('.svg').val(svgContent);
+		if(this.workspace.query.name!=undefined) {
+			var f = this.workspace.query.name.substring(this.workspace.query.name.lastIndexOf('/') + 1).slice(0, -6);
+			form.find('.name').val(f);
+		}
         form.attr('action', Settings.REST_URL + this.workspace.query.url() + escape("/../../export/saiku/chart"));
         form.submit();
         return false;
@@ -122,8 +126,7 @@ var Chart = Backbone.View.extend({
                 items: {
                     "png": {name: "PNG"},
                     "jpg": {name: "JPEG"},
-                    "pdf": {name: "PDF"},
-                    "svg": {name: "SVG"}
+                    "pdf": {name: "PDF"}
                 }
         });
         $target.contextMenu();

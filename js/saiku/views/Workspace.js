@@ -207,13 +207,13 @@ var Workspace = Backbone.View.extend({
         // Adjust the height of the separator
         var $separator = $(this.el).find('.sidebar_separator');
         var heightReduction = 87;
-        if (Settings.PLUGIN == true || Settings.BIPLUGIN == true) {
+        if (Settings.PLUGIN === true || Settings.BIPLUGIN === true) {
             heightReduction = 2;
             if (Settings.MODE == 'table') {
                 heightReduction = -5;
             }
         }
-        if ($('#header').length == 0 || $('#header').is('hidden')) {
+        if ($('#header').length === 0 || $('#header').is('hidden')) {
             heightReduction = 2;
         }
 
@@ -403,7 +403,7 @@ var Workspace = Backbone.View.extend({
 
             if (!cubeModel.has('data')) {
                 cubeModel.fetch({ success: function() {
-                    self.trigger('cube:loaded')
+                    self.trigger('cube:loaded');
                 }});
             }
             this.trigger('query:new', { workspace: this });
@@ -678,11 +678,11 @@ var Workspace = Backbone.View.extend({
         var self = this;
         $(this.el).find(".workspace_results_info").empty();
 
-        if (args.data != null && args.data.error != null) {
+        if (args.data !== null && args.data.error !== null) {
             return this.error(args);
         }        
         // Check to see if there is data
-        if (args.data == null || (args.data.cellset && args.data.cellset.length === 0)) {
+        if (args.data === null || (args.data.cellset && args.data.cellset.length === 0)) {
             return this.no_results(args);
         }
 
