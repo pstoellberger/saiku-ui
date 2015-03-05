@@ -1,9 +1,11 @@
 
-var SaikuTableRenderer = _.extend(SaikuRenderer, {
-    key: "table"
-});
+function SaikuTableRenderer(data, options) {
+    this._data = data;
+    this._options = options;
+}
 
-SaikuTableRenderer.prototype._render = function(data, options) {
+
+SaikuTableRenderer.prototype.render = function(data, options) {
         var self = this;
         if (data) {
             this._data = data;
@@ -90,7 +92,7 @@ SaikuTableRenderer.prototype.clear = function(data, options) {
 
 };
 
-SaikuTableRenderer.prototype._processData = function(data, options) {
+SaikuTableRenderer.prototype.processData = function(data, options) {
     this._hasProcessed = true;
 };
 

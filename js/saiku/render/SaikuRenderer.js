@@ -26,15 +26,8 @@ var SaikuRenderer = function(data, options) {
     if (typeof Backbone !== "undefined") {
         _.extend(this, Backbone.Events);
     }
-    if (data) {
-        this._data = data;
-        this.processData(data, options);
-        this._hasProcessed = true;
-    }
 
-};
-
-SaikuRenderer.prototype.render = function(data, options) {
+this.render = function(data, options) {
     var r = null;
     if (typeof Backbone !== "undefined") {
         this.trigger('render:start', this );
@@ -50,7 +43,7 @@ SaikuRenderer.prototype.render = function(data, options) {
     return r;
 };
 
-SaikuRenderer.prototype.processData = function(data, options) {
+this.processData = function(data, options) {
     if (typeof Backbone !== "undefined") {
         this.trigger('processData:start', this );
     }
@@ -59,10 +52,18 @@ SaikuRenderer.prototype.processData = function(data, options) {
         this.trigger('processData:end', this );
     }
 };
-SaikuRenderer.prototype.hasProcessedData = function() {
+this.hasProcessedData = function() {
     return this._hasProcessed;
 };
 
 
-SaikuRenderer.prototype._render = function(data, options) {};
-SaikuRenderer.prototype._processData = function(data, options) {};
+this._render = function(data, options) {};
+this._processData = function(data, options) {};
+
+if (data) {
+        this._data = data;
+        this.processData(data, options);
+        this._hasProcessed = true;
+}
+
+}
