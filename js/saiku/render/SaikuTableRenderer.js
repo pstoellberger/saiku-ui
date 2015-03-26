@@ -1,7 +1,7 @@
 
 function SaikuTableRenderer(data, options) {
     this._data = data;
-    this._options = options;
+    this._options = _.extend({}, SaikuRendererOptions, options);
 }
 
 
@@ -86,7 +86,7 @@ SaikuTableRenderer.prototype.render = function(data, options) {
 
 SaikuTableRenderer.prototype.clear = function(data, options) {
     var self = this;
-    if (this._options.htmlObject && this._options.hasOwnProperty('batch')) {
+    if (this._options && this._options.htmlObject && this._options.hasOwnProperty('batch')) {
         $(self._options.htmlObject).parent().parent().unbind('scroll');
     }
 
