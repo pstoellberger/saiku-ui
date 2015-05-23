@@ -605,9 +605,44 @@
                     <span>
                         <input class="selection_type selection_type_inclusion" type="radio" name="inclusion_type" value="INCLUSION" checked="true"><span class="i18n">Include</span>
                         <input class="selection_type selection_type_exclusion" type="radio" name="inclusion_type" value="EXCLUSION"><span class="i18n">Exclude</span>
+                        <input class="selection_type selection_type_range hide" type="radio" name="inclusion_type" value="RANGE" checked="true"><span class="i18n">Date Range</span>
                     </span>
                     <br/>
                     <div class="selection_options" ><ul></ul></div>
+                    <div class="period_selection hide">
+                    <div>
+                            <div class="selection_type_range_special select_period_options hide">
+                                <span class="i18n">Date Function</span>
+                                <select class="start_period_type_sel">
+                                    <option value="NONE" class="i18n">Select...</option>
+                                    <option value="CURRENT">Today</option>
+                                    <option value="LAST">Yesterday</option>
+                                    <option value="CURRENTWEEK">This Week</option>
+                                    <option value="LASTWEEK">Previous Week</option>
+                                    <option value="CURRENTMONTH">This Month</option>
+                                    <option value="LASTMONTH">Previous Month</option>
+                                    <option value="CURRENTYEAR">This Year</option>
+                                    <option value="LASTYEAR">Previous Year</option>
+                                </select>
+                            </div>
+                            <div class="select_period_options select_period_options_start">
+                                <div class="i18n">Start Period:</div>
+                                <input class="start_period_type" type="radio" name="start_period_type" value="CURRENT" /><span class="i18n">Curent</span>
+                                <input class="start_period_type" type="radio" name="start_period_type" value="LAST" checked /><span class="i18n">Last</span>
+                                <input class="start_period_type" type="radio" name="start_period_type" value="AGO" /><span class="i18n">Periods ago</span>
+                                <input id="start_periods" type="text" class="range_input" value="" />
+                            </div>
+                            <div class="select_period_options select_period_options_end">
+                                <div class="i18n">End Period:</div
+                                <span>
+                                    <input class="end_period_type" type="radio" name="end_period_type" value="CURRENT" checked /><span class="i18n">Curent</span>
+                                    <input class="end_period_type" type="radio" name="end_period_type" value="LAST" /><span class="i18n">Last</span>
+                                    <input class="end_period_type" type="radio" name="end_period_type" value="AGO" /><span class="i18n">Periods ago</span>
+                                    <input id="end_periods" type="text" class="range_input" value="" />
+                                </span>
+                            </div>
+                    </div>
+                </div>
             </div>
             <div class="updown_buttons">
                 <a class="form_button" href="#up" id="up_members">&nbsp;&uarr;&nbsp;</a><br><br>
@@ -627,16 +662,18 @@
 						<option class="i18n" value="avg">Avg</option>
 					</select>
 				</div>
+                
                 <label for="parameter" class="i18n hide parameter">Parameter Name</label>&nbsp;<input name="parameter" id="parameter" type="text" class="parameter hide" />
             </div>
-            <div class="info">
-                <div><label for="items_size" class="i18n">Items</label>: <span class="items_size"></span></div>
-                <div><span class="warning i18n"></span></div>
-            </div>
+            
 
             <div class="hint">
-                <div><label for="search_limit" class="i18n">Display Limit</label>: <span class="members_limit"></span></div>
-                <div><label for="search_limit" class="i18n">Filter Limit</label>: <span class="search_limit"></span></div>
+                <span><label for="items_size" class="i18n">Items</label>: <span class="items_size"></span></span> / 
+                <span><label for="search_limit" class="i18n">Display Limit</label>: <span class="members_limit"></span></span> / 
+                <span><label for="search_limit" class="i18n">Filter Limit</label>: <span class="search_limit"></span></span>
+                <div><span class="warning i18n"></span></div>
+                
+                
             </div>
 
             <div class="autocomplete"></div>

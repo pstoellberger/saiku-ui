@@ -717,6 +717,10 @@ textarea, select {
     height: inherit;
 }
 
+.dialog_selections .range_input {
+    width: 30px;
+}
+
 
 .dialog_selections .dialog_body .used_selections {
     padding-left: 25px;
@@ -730,7 +734,22 @@ textarea, select {
     vertical-align: middle;
     display: none;
 }
-.dialog_selections .dialog_body .selection_options  {
+
+.dialog_selections .dialog_body .select_period_options  {
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #CCC;
+
+}
+.dialog_selections .dialog_body .period_selection  {
+    padding: 10px;
+    height: 250px;
+    width: 430px;
+    font-size: 11px;
+    overflow: auto;
+    
+}
+.dialog_selections .dialog_body .selection_options {
     height: 270px;
     width: 430px;
     font-size: 11px;
@@ -800,11 +819,17 @@ textarea, select {
 .dialog_selections .options:before {
     clear:both;
 }
+
 .dialog_selections .options, .dialog_selections .hint, .dialog_selections .info {
     float: left;
-    width: 250px;
     text-align: left;
 }
+
+.dialog_selections .options, .dialog_selections .hint  {
+    width: 500px;
+}
+
+
 .dialog_selections .info {
     width: 400px;
 }

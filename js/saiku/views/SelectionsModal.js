@@ -33,7 +33,9 @@ var SelectionsModal = Modal.extend({
         'change #use_result': 'use_result_action',
         'dblclick .selection_options li.option_value label' : 'click_move_selection',
         'click li.all_options' : 'click_all_member_selection',
-        'change #show_totals': 'show_totals_action'
+        'change #show_totals': 'show_totals_action',
+        'change .selection_type' : 'click_selection_type_range',
+        'change .start_period_type_sel' : 'change_special_select'
         //,'click div.updown_buttons a.form_button': 'updown_selection'
     },
 
@@ -89,10 +91,25 @@ var SelectionsModal = Modal.extend({
             dimension: args.key
         });
 
+        this.levelKey = args.key;
+        this.meta_info = this.get_level_meta();
+
         // Load template
         $(this.el).find('.dialog_body')
             .html(_.template($("#template-selections").html())(this));
 
+        if (this.meta_info && this.meta_info.levelType) {
+            var lType = this.meta_info.levelType;
+            if (lType && lType.length > 5 && lType.substring(0, "TIME_".length) == "TIME_") {
+                $(this.el).find('.selection_type_range').removeClass('hide');
+                if ("TIME_DAYS" === lType) {
+                    $(this.el).find('.selection_type_range_special').removeClass('hide');
+                }
+                
+
+            }
+
+        }
 
         var hName = this.member.hierarchy;
         var lName = this.member.level;
@@ -100,6 +117,23 @@ var SelectionsModal = Modal.extend({
         var level = null;
         if (hierarchy && hierarchy.levels.hasOwnProperty(lName)) {
             level = hierarchy.levels[lName];
+        }
+
+        if ("RANGE" === level.selection.type) {
+            var special, start, end = null;
+            var members = level.selection.members;
+            if (members && members.length > 0) {
+                var fun = members[0].uniqueName.replace('F:', '');
+                if (fun && fun.indexOf("AGO") > 0 || fun === "LAST" || fun === "CURRENT") {
+                    start = fun;
+                } else {
+                    special = fun;
+                }
+            }
+            if (members && members.length > 1) {
+                end = members[1].uniqueName.replace('F:', '');
+            }
+            this.change_period_ui(special, start, end);
         }
 
         if (Settings.ALLOW_PARAMETERS) {
@@ -135,6 +169,50 @@ var SelectionsModal = Modal.extend({
 
 
         this.get_members();
+    },
+
+    get_level_meta: function() {
+        var cubeModel = this.workspace.metadata;
+        var dimensions = null;
+        var measures = null; 
+        var key = this.workspace.selected_cube;
+        var hierarchyName = decodeURIComponent(this.levelKey.split("/")[0]);
+        var levelName = decodeURIComponent(this.levelKey.split("/")[1]);
+        var meta = {};
+
+        if (cubeModel && cubeModel.has('data')) {
+            dimensions = cubeModel.get('data').dimensions;
+            measures = cubeModel.get('data').measures;
+        }
+
+        if (!cubeModel || !dimensions || !measures) {
+                        if (typeof localStorage !== "undefined" && localStorage && localStorage.getItem("cube." + key) !== null) {
+                            Saiku.session.sessionworkspace.cube[key] = new Cube(JSON.parse(localStorage.getItem("cube." + key)));
+                        } else {
+                            Saiku.session.sessionworkspace.cube[key] = new Cube({ key: key });
+                            Saiku.session.sessionworkspace.cube[key].fetch({ async : false });
+                        }
+                        dimensions = Saiku.session.sessionworkspace.cube[key].get('data').dimensions;
+                        measures = Saiku.session.sessionworkspace.cube[key].get('data').measures;
+        } 
+        if (dimensions) {
+            _.each(dimensions, function(d) {
+                _.each(d.hierarchies, function(h) {
+                    if (h.uniqueName === hierarchyName) {
+                        _.each(h.levels, function(l) {
+                            if (l.name == levelName) {
+                                if (l.flags) {
+                                    meta = l.flags;
+                                }
+                                meta.levelType = l.levelType;
+                            }
+                        })
+                    }
+                })
+            });
+        }
+        return meta;
+
     },
 
     show_totals_action: function(event) {
@@ -223,16 +301,22 @@ var SelectionsModal = Modal.extend({
 
             // Populate both boxes
 
-
-            for (var j = 0, len = this.selected_members.length; j < len; j++) {
-                    var member = this.selected_members[j];
-                    used_members.push(member.caption);
+            if (this.selection_type !== "RANGE") {
+                for (var j = 0, len = this.selected_members.length; j < len; j++) {
+                        var member = this.selected_members[j];
+                        used_members.push(member.caption);
+                }
             }
             if ($(this.el).find('.used_selections .selection_options li.option_value' ).length == 0) {
                 var selectedMembers = $(this.el).find('.used_selections .selection_options');
                 selectedMembers.empty();
-                var selectedHtml = _.template($("#template-selections-options").html())({ options: this.selected_members });
-                $(selectedMembers).html(selectedHtml);
+                if (this.selection_type !== "RANGE") {
+                    var selectedHtml = _.template($("#template-selections-options").html())({ options: this.selected_members });
+                    $(selectedMembers).html(selectedHtml);
+                } else {
+                    var selectedHtml = _.template($("#template-selections-options").html())({ options: [] });
+                    $(selectedMembers).html(selectedHtml);
+                }
             }
 
             // Filter out used members
@@ -334,10 +418,18 @@ var SelectionsModal = Modal.extend({
         if (this.selection_type === "EXCLUSION") {
             $(this.el).find('.selection_type_inclusion').prop('checked', false);
             $(this.el).find('.selection_type_exclusion').prop('checked', true);
-        } else {
+            $(this.el).find('.selection_type_range').prop('checked', false);
+        } else if (this.selection_type === "RANGE") {
+            $(this.el).find('.selection_type_inclusion').prop('checked', false);
+            $(this.el).find('.selection_type_exclusion').prop('checked', false);
+            $(this.el).find('.selection_type_range').prop('checked', true);
+        }
+        else {
             $(this.el).find('.selection_type_inclusion').prop('checked', true);
             $(this.el).find('.selection_type_exclusion').prop('checked', false);
+            $(this.el).find('.selection_type_range').prop('checked', false);
         }
+        this.change_selection_type(this.selection_type);
 
 		// Translate
 		Saiku.i18n.translate();
@@ -397,6 +489,55 @@ var SelectionsModal = Modal.extend({
             $(event.currentTarget).parent().find('li.option_value input').prop('checked', true);
         }
 
+    },
+
+    click_selection_type_range: function(event, ui) {
+        var selectionType = $(event.target).val();
+        this.change_selection_type(selectionType);
+    },
+    change_selection_type: function(selectionType) {
+        var self = this;
+        if (selectionType === "RANGE") {
+            
+            $(self.el).find('.used_selections .selection_options').addClass('hide');
+            $(self.el).find('.period_selection').removeClass('hide');
+        } else {
+            $(self.el).find('.period_selection').addClass('hide');
+            $(self.el).find('.used_selections .selection_options').removeClass('hide');
+        }
+
+    },
+
+    change_special_select: function(event, ui) {
+        var selectionType = $(event.target).val();
+        this.change_period_ui(selectionType);
+    },
+
+    change_period_ui: function(special, start, end) {
+        var self = this;
+        if (special && special !== "NONE") {
+            $(self.el).find('.select_period_options_start, .select_period_options_end').addClass("disabled");
+            $(self.el).find('.start_period_type_sel').val(special);
+        } else {
+            $(self.el).find('.select_period_options_start, .select_period_options_end').removeClass("disabled");
+            if (start) {
+                if(start.indexOf("AGO") >= 0) {
+                    var periods = start.substring(0, start.length - 3);
+                    $('#start_periods').val(periods);
+                    start = "AGO";
+                }
+                $(self.el).find('input.start_period_type').val([start]);
+            }
+            if (end) {
+                if(end.indexOf("AGO") >= 0) {
+                    var periods = end.substring(0, end.length - 3);
+                    $('#end_periods').val(periods);
+                    end = "AGO";
+                }
+                $(self.el).find('input.end_period_type').val([end]);
+            }
+
+        }
     },
 
     click_move_selection: function(event, ui) {
@@ -468,7 +609,38 @@ var SelectionsModal = Modal.extend({
                 }
                 var selectionType = $(self.el).find('input.selection_type:checked').val();
                 selectionType = selectionType ? selectionType : "INCLUSION";
+                if ("RANGE" === selectionType) {
+
+                    updates = [];
+
+                    var startType = $(self.el).find('.start_period_type_sel').val();
+                    startType = startType ? startType : "LAST";
+                    if (startType === "NONE") {
+                        startType = $(self.el).find('input.start_period_type:checked').val();
+                        if (startType === "AGO") {
+                            startType = parseInt( $('#start_periods').val() ) + startType
+                        }
+                    }
+                    updates.push({
+                        uniqueName: "F:" + startType
+                    });
+
+                    if (startType && startType === "LAST" || startType.indexOf("AGO") >= 0 || startType == "CURRENT") {
+                        var endType = $(self.el).find('input.end_period_type:checked').val();
+                        endType = endType ? endType : "CURRENT";
+
+                        if (endType === "AGO") {
+                            endType = parseInt( $('#end_periods').val() ) + endType
+                        }
+
+                        updates.push({
+                            uniqueName: "F:" + endType
+                        });
+                    }
+                }
                 hierarchy.levels[lName].selection = { "type": selectionType, "members": updates };
+
+
                 if (Settings.ALLOW_PARAMETERS && parameterName) {
                     hierarchy.levels[lName].selection["parameterName"] = parameterName;
                     var parameters = self.workspace.query.helper.model().parameters;
