@@ -119,7 +119,7 @@ var SelectionsModal = Modal.extend({
             level = hierarchy.levels[lName];
         }
 
-        if ("RANGE" === level.selection.type) {
+        if (level.selection && level.selection.type && "RANGE" === level.selection.type) {
             var special, start, end = null;
             var members = level.selection.members;
             if (members && members.length > 0) {
