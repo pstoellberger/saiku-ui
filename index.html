@@ -605,7 +605,7 @@
                     <span>
                         <input class="selection_type selection_type_inclusion" type="radio" name="inclusion_type" value="INCLUSION" checked="true"><span class="i18n">Include</span>
                         <input class="selection_type selection_type_exclusion" type="radio" name="inclusion_type" value="EXCLUSION"><span class="i18n">Exclude</span>
-                        <input class="selection_type selection_type_range hide" type="radio" name="inclusion_type" value="RANGE" checked="true"><span class="i18n">Date Range</span>
+                        <input class="selection_type selection_type_range hide" type="radio" name="inclusion_type" value="RANGE"><span class="i18n">Date Range</span>
                     </span>
                     <br/>
                     <div class="selection_options" ><ul></ul></div>
@@ -631,6 +631,12 @@
                                 <input class="start_period_type" type="radio" name="start_period_type" value="LAST" checked /><span class="i18n">Last</span>
                                 <input class="start_period_type" type="radio" name="start_period_type" value="AGO" /><span class="i18n">Periods ago</span>
                                 <input id="start_periods" type="text" class="range_input" value="" />
+
+                                <div class="exact_input_wrap hide">
+                                    <input class="start_period_type exact_input" type="radio" name="start_period_type" value="EXACT" />
+                                    <span class="i18n">Exact</span>
+                                    <input id="start_exact_date" type="text" value="" />
+                                </div>
                             </div>
                             <div class="select_period_options select_period_options_end">
                                 <div class="i18n">End Period:</div
@@ -639,6 +645,11 @@
                                     <input class="end_period_type" type="radio" name="end_period_type" value="LAST" /><span class="i18n">Last</span>
                                     <input class="end_period_type" type="radio" name="end_period_type" value="AGO" /><span class="i18n">Periods ago</span>
                                     <input id="end_periods" type="text" class="range_input" value="" />
+                                    <div class="exact_input_wrap hide">
+                                        <input class="end_period_type exact_input" type="radio" name="end_period_type" value="EXACT" />
+                                        <span class="i18n">Exact</span>
+                                        <input id="end_exact_date" type="text" value="" />
+                                    </div>
                                 </span>
                             </div>
                     </div>

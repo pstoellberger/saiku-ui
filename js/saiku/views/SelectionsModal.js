@@ -35,7 +35,9 @@ var SelectionsModal = Modal.extend({
         'click li.all_options' : 'click_all_member_selection',
         'change #show_totals': 'show_totals_action',
         'change .selection_type' : 'click_selection_type_range',
-        'change .start_period_type_sel' : 'change_special_select'
+        'change .start_period_type_sel' : 'change_special_select',
+        'change #start_exact_date, #end_exact_date' : 'change_exact_ui'
+        
         //,'click div.updown_buttons a.form_button': 'updown_selection'
     },
 
@@ -104,6 +106,8 @@ var SelectionsModal = Modal.extend({
                 $(this.el).find('.selection_type_range').removeClass('hide');
                 if ("TIME_DAYS" === lType) {
                     $(this.el).find('.selection_type_range_special').removeClass('hide');
+                    $(this.el).find('.exact_input_wrap').removeClass('hide');
+                    $('#start_exact_date, #end_exact_date').datepicker({ "dateFormat" : "yy-mm-dd"});
                 }
                 
 
@@ -124,7 +128,7 @@ var SelectionsModal = Modal.extend({
             var members = level.selection.members;
             if (members && members.length > 0) {
                 var fun = members[0].uniqueName.replace('F:', '');
-                if (fun && fun.indexOf("AGO") > 0 || fun === "LAST" || fun === "CURRENT") {
+                if (fun && fun.indexOf("AGO") > 0 || fun === "LAST" || fun === "CURRENT" || fun === "EXACT") {
                     start = fun;
                 } else {
                     special = fun;
@@ -526,6 +530,11 @@ var SelectionsModal = Modal.extend({
                     $('#start_periods').val(periods);
                     start = "AGO";
                 }
+                if(start.indexOf("EXACT") >= 0) {
+                    var periods = start.substring(0, start.length - 5);
+                    $('#start_exact_date').val(periods);
+                    start = "EXACT";
+                }
                 $(self.el).find('input.start_period_type').val([start]);
             }
             if (end) {
@@ -534,10 +543,19 @@ var SelectionsModal = Modal.extend({
                     $('#end_periods').val(periods);
                     end = "AGO";
                 }
+                if(end.indexOf("EXACT") >= 0) {
+                    var periods = end.substring(0, end.length - 5);
+                    $('#start_exact_date').val(periods);
+                    end = "EXACT";
+                }
                 $(self.el).find('input.end_period_type').val([end]);
             }
 
         }
+    },
+
+    change_exact_ui: function(event, ui) {
+        $(event.target).parent().find('.exact_input').attr('checked', true);
     },
 
     click_move_selection: function(event, ui) {
@@ -620,18 +638,26 @@ var SelectionsModal = Modal.extend({
                         if (startType === "AGO") {
                             startType = parseInt( $('#start_periods').val() ) + startType
                         }
+                        if (startType === "EXACT") {
+                            startType = $('#start_exact_date').val() + startType
+                        }
                     }
                     updates.push({
                         uniqueName: "F:" + startType
                     });
 
-                    if (startType && startType === "LAST" || startType.indexOf("AGO") >= 0 || startType == "CURRENT") {
+                    if (startType && startType === "LAST" || startType.indexOf("AGO") >= 0 || startType == "CURRENT" || startType.indexOf("EXACT") >= 0) {
                         var endType = $(self.el).find('input.end_period_type:checked').val();
                         endType = endType ? endType : "CURRENT";
 
                         if (endType === "AGO") {
                             endType = parseInt( $('#end_periods').val() ) + endType
                         }
+
+                        if (endType === "EXACT") {
+                            endType = $('#end_exact_date').val() + endType
+                        }
+
 
                         updates.push({
                             uniqueName: "F:" + endType
