@@ -128,7 +128,7 @@ var SelectionsModal = Modal.extend({
             var members = level.selection.members;
             if (members && members.length > 0) {
                 var fun = members[0].uniqueName.replace('F:', '');
-                if (fun && fun.indexOf("AGO") > 0 || fun === "LAST" || fun === "CURRENT" || fun === "EXACT") {
+                if (fun && (fun.indexOf("AGO") > 0 || fun === "LAST" || fun === "CURRENT" || fun.indexOf("EXACT") > 0 )) {
                     start = fun;
                 } else {
                     special = fun;
@@ -545,7 +545,7 @@ var SelectionsModal = Modal.extend({
                 }
                 if(end.indexOf("EXACT") >= 0) {
                     var periods = end.substring(0, end.length - 5);
-                    $('#start_exact_date').val(periods);
+                    $('#end_exact_date').val(periods);
                     end = "EXACT";
                 }
                 $(self.el).find('input.end_period_type').val([end]);
