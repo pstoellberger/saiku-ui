@@ -15,13 +15,8 @@
  */
  
 
-var account = 'UA-16172251-20';
-
-if (window.location.hostname && window.location.hostname == "dev.analytical-labs.com" ) {
-    account = 'UA-16172251-12';
-} else if (window.location.hostname && window.location.hostname == "demo.analytical-labs.com" ) {
-	account = 'UA-16172251-5';
-} 
+var account = 'UA-XXXXX';
+/*
 
 
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -31,3 +26,4 @@ if (window.location.hostname && window.location.hostname == "dev.analytical-labs
 
   ga('create', account, 'analytical-labs.com');
   ga('send', 'pageview');
+*/
