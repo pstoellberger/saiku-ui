@@ -56,12 +56,13 @@ var Settings = {
     MEMBERS_SEARCH_LIMIT: 75,
     ALLOW_IMPORT_EXPORT: false,
     ALLOW_PARAMETERS: true,
+    ALLOW_EMPTY_ROWS: false,
     PLUGINS: [
         "Chart"
     ],
     DEFAULT_VIEW_STATE: 'view', // could be 'edit' as well
     DEMO: false,
-    TELEMETRY_SERVER: 'http://telemetry.analytical-labs.com:7000',
+    TELEMETRY_SERVER: '',
     LOCALSTORAGE_EXPIRATION: 10 * 60 * 60 * 1000 /* 10 hours, in ms */,
     UPGRADE: false,
     REPO_BASE: null    

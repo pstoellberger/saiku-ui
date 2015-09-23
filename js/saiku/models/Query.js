@@ -89,6 +89,9 @@ var Query = Backbone.Model.extend({
             if (exModel.type == "QUERYMODEL") {
                 var columnsOk = Object.keys(exModel.queryModel.axes['COLUMNS'].hierarchies).length > 0;
                 var rowsOk = Object.keys(exModel.queryModel.axes['ROWS'].hierarchies).length > 0;
+                if (Settings.ALLOW_EMPTY_ROWS) {
+                    rowsOk = true;
+                }
                 var detailsOk = exModel.queryModel.details.axis == 'COLUMNS' && exModel.queryModel.details.measures.length > 0;
                 if (!rowsOk || !columnsOk || !detailsOk) {
                     errorMessage = "";
