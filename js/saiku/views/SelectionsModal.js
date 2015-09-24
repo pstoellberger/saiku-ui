@@ -108,6 +108,9 @@ var SelectionsModal = Modal.extend({
                     $(this.el).find('.selection_type_range_special').removeClass('hide');
                     $(this.el).find('.exact_input_wrap').removeClass('hide');
                     $('#start_exact_date, #end_exact_date').datepicker({ "dateFormat" : "yy-mm-dd"});
+                } else {
+                    $(this.el).find('.selection_type_range_special').addClass('hide');
+                    $(this.el).find('.exact_input_wrap').addClass('hide');
                 }
                 
 
@@ -128,6 +131,9 @@ var SelectionsModal = Modal.extend({
             var members = level.selection.members;
             if (members && members.length > 0) {
                 var fun = members[0].uniqueName.replace('F:', '');
+                if (members.length === 1) {
+                    special = fun;
+                }
                 if (fun && (fun.indexOf("AGO") > 0 || fun === "LAST" || fun === "CURRENT" || fun.indexOf("EXACT") > 0 )) {
                     start = fun;
                 } else {
@@ -631,9 +637,9 @@ var SelectionsModal = Modal.extend({
 
                     updates = [];
 
-                    var startType = $(self.el).find('.start_period_type_sel').val();
-                    startType = startType ? startType : "LAST";
-                    if (startType === "NONE") {
+                    var startType_sel = $(self.el).find('.start_period_type_sel').val();
+                    var startType = startType_sel ? startType_sel : "LAST";
+                    if (startType_sel === "NONE") {
                         startType = $(self.el).find('input.start_period_type:checked').val();
                         if (startType === "AGO") {
                             startType = parseInt( $('#start_periods').val() ) + startType
@@ -646,7 +652,7 @@ var SelectionsModal = Modal.extend({
                         uniqueName: "F:" + startType
                     });
 
-                    if (startType && startType === "LAST" || startType.indexOf("AGO") >= 0 || startType == "CURRENT" || startType.indexOf("EXACT") >= 0) {
+                    if (startType_sel === "NONE" && (startType && startType === "LAST" || startType.indexOf("AGO") >= 0 || startType == "CURRENT" || startType.indexOf("EXACT") >= 0)) {
                         var endType = $(self.el).find('input.end_period_type:checked').val();
                         endType = endType ? endType : "CURRENT";
 
