@@ -103,7 +103,7 @@ var SelectionsModal = Modal.extend({
         if (this.meta_info && this.meta_info.levelType) {
             var lType = this.meta_info.levelType;
             if (lType && lType.length > 5 && lType.substring(0, "TIME_".length) == "TIME_") {
-                $(this.el).find('.selection_type_range').removeClass('hide');
+                $(this.el).find('.selection_type_range, .selection_type_range_label').removeClass('hide');
                 if ("TIME_DAYS" === lType) {
                     $(this.el).find('.selection_type_range_special').removeClass('hide');
                     $(this.el).find('.exact_input_wrap').removeClass('hide');
@@ -112,8 +112,8 @@ var SelectionsModal = Modal.extend({
                     $(this.el).find('.selection_type_range_special').addClass('hide');
                     $(this.el).find('.exact_input_wrap').addClass('hide');
                 }
-                
-
+            } else {
+                $(this.el).find('.selection_type_range, .selection_type_range_label').addClass('hide');
             }
 
         }
