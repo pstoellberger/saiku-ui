@@ -32,7 +32,8 @@ var Modal = Backbone.View.extend({
     },
     
     events: {
-        'click a': 'call'
+        'click a': 'call',
+        'keydown .ui-dialog' : 'onKeyDown'
     },
     
     buttons: [
@@ -51,7 +52,7 @@ var Modal = Backbone.View.extend({
     
     initialize: function(args) {
         _.extend(this, args);
-        _.bindAll(this, "call");
+        _.bindAll(this, "call", "onKeyDown");
         _.extend(this, Backbone.Events);
 
     },
@@ -65,7 +66,15 @@ var Modal = Backbone.View.extend({
         uiDialogTitle.html(this.options.title);
         uiDialogTitle.addClass('i18n');
         Saiku.i18n.translate();
+
         return this;
+    },
+
+     onKeyDown: function(evt, target) {
+         if (evt && evt.keyCode && evt.keyCode === $.ui.keyCode.ESCAPE) {
+            $(this.el).dialog('destroy').remove();
+            $(this.el).remove();
+        }
     },
     
     call: function(event) {
@@ -81,6 +90,7 @@ var Modal = Backbone.View.extend({
     },
     
     open: function() {
+        $(this.el).on('keydown', this.onKeyDown.bind(this));
         $(this.el).dialog('open');
         this.trigger('open', { modal: this });
         return this;

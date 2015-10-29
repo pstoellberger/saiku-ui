@@ -455,8 +455,6 @@ var SelectionsModal = Modal.extend({
             .offset({ left: left});
 
         $('#filter_selections').attr("disabled", false);
-        $(this.el).find('a[href=#save]').focus();
-        $(this.el).find('a[href=#save]').blur();
     },
 
     move_selection: function(event) {
