@@ -63,12 +63,12 @@ var Session = Backbone.Model.extend({
         if ((response === null || response.sessionid == null)) {
             // Open form and retrieve credentials
             Saiku.ui.unblock();
-            if (Settings.DEMO) {
-                this.form = new DemoLoginForm({ session: this });
+            if (Settings.LOGIN_ACTION) {
+                Settings.LOGIN_ACTION();
             } else {
                 this.form = new LoginForm({ session: this });
+                this.form.render().open();
             }
-            this.form.render().open();
         } else {
             this.sessionid = response.sessionid;
             this.roles = response.roles;
@@ -109,9 +109,12 @@ var Session = Backbone.Model.extend({
         this.password = null;
         this.destroy({async: false });
         //console.log("REFRESH!");
-        document.location.reload(false);
+        if (Settings.LOGOUT_ACTION) {
+            Settings.LOGOUT_ACTION();
+        } else {
+            document.location.reload(false);
+        }
         delete this.id;
-
     },
 
     url: function() {

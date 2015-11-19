@@ -42,6 +42,7 @@ var auth = argv[6] || null;
 // Load static server
 var twoHours = 1000 * 60 * 60 * 2;
 app.use(express['static'](__dirname));
+app.set('trust proxy', true)
 
 var standard_prefix = "/saiku/rest/saiku/";
 
@@ -60,6 +61,9 @@ function get_from_proxy(request, response) {
         request.headers['www-authorization'] = 'Basic ' + new Buffer(auth).toString('base64');
         delete request.headers['cookie'];
     }
+    request.headers['X-Forwarded-For'] = request.host;
+    request.headers['X-Forwarded-Port'] = port;
+
 
     var options = {
         hostname : backend_host,

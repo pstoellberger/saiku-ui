@@ -102,3 +102,47 @@ var Modal = Backbone.View.extend({
         return false;
     }
 });
+
+var SimpleModal = Modal.extend({
+
+    type: "filter",
+    closeText: "Export",
+
+    events: {
+        'submit form': 'save',
+        'click .dialog_footer a' : 'call',
+        'keydown' : 'onKeyDown'
+    },
+
+    onKeyDown: function(evt) {
+         if (evt && evt.keyCode && evt.keyCode === $.ui.keyCode.ESCAPE) {
+            $(this.el).dialog('destroy').remove();
+            $(this.el).remove();
+        }
+    },
+
+    buttons: [
+        { text: "OK", method: "close" }
+    ],
+
+    message: "Your message...",
+
+    initialize: function(args) {
+        this.options['title'] = args.title;
+        this.message = args.message;
+        if (args.buttons) {
+            this.buttons = args.buttons;
+        }
+        if (args.type) {
+            this.type = args.type;
+        }
+        if(isIE && isIE < 9) {
+            $(this.el).find('form').on('submit', this.save);
+        }
+    },
+
+    destroy: function() {
+        $(this.el).dialog('destroy').remove();
+        $(this.el).remove();
+    }
+});

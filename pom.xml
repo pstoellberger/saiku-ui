@@ -61,14 +61,12 @@
                   <include>classes/models/Dimension.js</include>
                   <include>classes/views/DimensionList.js</include>
                   <include>classes/views/Toolbar.js</include>
-                  <include>classes/views/Upgrade.js</include>
                   <include>classes/views/Modal.js</include>
                   <include>classes/views/MDXModal.js</include>
                   <include>classes/views/SelectionsModal.js</include>
                   <include>classes/views/DrillthroughModal.js</include>
                   <include>classes/views/DrillAcrossModal.js</include>
                   <include>classes/views/PermissionsModal.js</include>
-                  <include>classes/views/DemoLoginForm.js</include>
                   <include>classes/views/LoginForm.js</include>
                   <include>classes/views/AboutModal.js</include>
                   <include>classes/views/AddFolderModal.js</include>
@@ -101,7 +99,6 @@
                   <include>classes/plugins/I18n/plugin.js</include>
                   <include>classes/plugins/BIServer/plugin.js</include>
                   <include>classes/plugins/CCC_Chart/plugin.js</include>
-                  <include>classes/plugins/Fullscreen/plugin.js</include>
               </includes>
             </aggregation>
               <aggregation>
