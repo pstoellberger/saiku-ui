@@ -65,7 +65,9 @@ var Settings = {
     TELEMETRY_SERVER: '',
     LOCALSTORAGE_EXPIRATION: 10 * 60 * 60 * 1000 /* 10 hours, in ms */,
     UPGRADE: false,
-    REPO_BASE: null    
+    REPO_BASE: null,
+    LOGIN_ACTION: null,
+    LOGOUT_ACTION: null
 };
 
 /**
