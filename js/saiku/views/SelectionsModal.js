@@ -36,7 +36,8 @@ var SelectionsModal = Modal.extend({
         'change #show_totals': 'show_totals_action',
         'change .selection_type' : 'click_selection_type_range',
         'change .start_period_type_sel' : 'change_special_select',
-        'change #start_exact_date, #end_exact_date' : 'change_exact_ui'
+        'change #start_exact_date, #end_exact_date' : 'change_exact_ui',
+        'keydown .range_input' : 'change_range_input'
         
         //,'click div.updown_buttons a.form_button': 'updown_selection'
     },
@@ -560,6 +561,10 @@ var SelectionsModal = Modal.extend({
 
     change_exact_ui: function(event, ui) {
         $(event.target).parent().find('.exact_input').attr('checked', true);
+    },
+
+    change_range_input: function(event, ui) {
+        $(event.target).parent().find("input[type=radio][value=AGO]").attr('checked', true);
     },
 
     click_move_selection: function(event, ui) {
