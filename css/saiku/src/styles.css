@@ -230,6 +230,10 @@ textarea, select {
 .pager_contents a {
 	color: #666;
 	text-decoration: none;
+    padding-left: 5px;
+}
+.pager_contents a:hover {
+    color: black;
 }
 .tabs ul {
     background: #F8F8F8;

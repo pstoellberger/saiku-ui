@@ -96,10 +96,17 @@ var Workspace = Backbone.View.extend({
     },
     
     caption: function(increment) {
-        if (this.query && this.query.model.name) {
-            return this.query.model.name;
-        } else if (this.query && this.query.get('name')) {
-            return this.query.get('name');
+        var name = null;
+        if (this.query && this.query.get('name')) {
+            name = this.query.get('name');
+        } else if (this.query && this.query.model.name) {
+            name = this.query.model.name;
+        }
+        if (this.query && this.query.get('file')) {
+            title = this.query.get('file');
+            return "<span title='" + title + "'>" + name + "</span>";
+        } else if (name) {
+            return name;
         }
         if (increment) {
             Saiku.tabs.queryCount++;
