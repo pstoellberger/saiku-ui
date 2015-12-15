@@ -53,9 +53,12 @@ var PermissionsModal = Modal.extend({
                // Load template
        $(this.el).find('.dialog_body')
           .html(_.template($("#template-permissions").html())(this));
+        $(this.el).parent().css({'overflow' : 'auto'});
 
         $(this.el).find('.filterbox').autocomplete({
                     minLength: 1,
+                    delay: 100,
+                    appendTo: ".autocomplete",
                     source: Saiku.session.roles
                 }).data( "autocomplete" );
         /*._renderItem = function( ul, item ) {
