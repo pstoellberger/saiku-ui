@@ -128,7 +128,7 @@ SaikuClient.prototype.execute = function(usercall) {
   var client = this.config;
   var parameters = {};
   if (call.params) {
-    for (key in call.params) {
+    for (var key in call.params) {
       parameters['param' + key] = call.params[key];
     }
   }

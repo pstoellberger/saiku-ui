@@ -193,9 +193,23 @@
                 <span class="root collapsed sprite"></span>
                 <a class="folder_collapsed sprite" href="#" title="<%= dimension.description ? dimension.description : dimension.caption %>"><%= dimension.caption %></a>
                 <ul>
+                <% 
+                    var hide_hierarchy = (dimension.hierarchies.length === 1 || Settings.DIMENSION_SHOW_REDUCED);
+                    if (hide_hierarchy) {
+                        var smallLevel = true;
+                            _.each(dimension.hierarchies, function(h) {
+                                var countLevels = 0;
+                                _.each(h.levels, function(l) { 
+                                    countLevels += ((l.name !== "(All)" || Settings.DIMENSION_SHOW_ALL) ? 1 : 0);
+                                });
+                                smallLevel = smallLevel && (countLevels <= 1);
+                            });
+                        hide_hierarchy = hide_hierarchy && smallLevel;
+                    }
+                %>
                 <% _.each(dimension.hierarchies, function(hierarchy) { %>
-                    <% if (typeof hierarchy["visible"] == "undefined" || hierarchy["visible"]) { %>
-                        <% if (!Settings.DIMENSION_SHOW_REDUCED && dimension.hierarchies.length > 1) { %>
+                    <% if (typeof hierarchy["visible"] == "undefined" || hierarchy["visible"] === true) { %>
+                        <% if (!hide_hierarchy) {  %>
                             <li class="hierarchy hide">
                                 <a class="dimension" title="<%= hierarchy.description ? hierarchy.description : hierarchy.caption %>" href="#"  hierarchy="<%= hierarchy.name %>"><%= hierarchy.caption %></a>
                             </li>
