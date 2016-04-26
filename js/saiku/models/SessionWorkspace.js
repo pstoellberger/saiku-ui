@@ -35,11 +35,10 @@ var SessionWorkspace = Backbone.Model.extend({
             }
             if (localStorage.getItem('expiration') && localStorage.getItem('expiration') <= (new Date()).getTime()) {
                 localStorage.clear();
-            } else if (!localStorage.getItem('saiku-version') || (localStorage.getItem('saiku-version') !== Settings.VERSION) ) {
+            } else if (!localStorage.getItem('saiku-version') || (localStorage.getItem('saiku-version') !== Settings.VERSION)
+                        || !localStorage.getItem('saiku-session') || (localStorage.getItem('saiku-session') !== Saiku.session.get('sessionid'))) {
                 localStorage.clear();
                 localStorage.setItem('saiku-version', Settings.VERSION);
-            } else if (!localStorage.getItem('saiku-session') || (localStorage.getItem('saiku-session') !== Saiku.session.get('sessionid')) ) {
-                localStorage.clear();
                 localStorage.setItem('saiku-session', Saiku.session.get('sessionid'));
             }
         }        
