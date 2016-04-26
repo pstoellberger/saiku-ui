@@ -117,7 +117,11 @@ var DimensionList = Backbone.View.extend({
         if ($target.hasClass('root')) {
             $target.find('a').toggleClass('folder_collapsed').toggleClass('folder_expand');
             $target.toggleClass('collapsed').toggleClass('expand');
-            $target.parents('li').find('ul').children('li').toggle();
+            $target.siblings('ul.dimension_tree_folder:first').toggle();
+            $tree = $target.parents('.sidebar');
+            $tree.hide();
+            $tree.get(0).offsetHeight; // no need to store this anywhere, the reference is enough
+            $tree.show();
         }
         
         return false;
