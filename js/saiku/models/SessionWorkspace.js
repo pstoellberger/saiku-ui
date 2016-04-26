@@ -38,6 +38,9 @@ var SessionWorkspace = Backbone.Model.extend({
             } else if (!localStorage.getItem('saiku-version') || (localStorage.getItem('saiku-version') !== Settings.VERSION) ) {
                 localStorage.clear();
                 localStorage.setItem('saiku-version', Settings.VERSION);
+            } else if (!localStorage.getItem('saiku-session') || (localStorage.getItem('saiku-session') !== Saiku.session.get('sessionid')) ) {
+                localStorage.clear();
+                localStorage.setItem('saiku-session', Saiku.session.get('sessionid'));
             }
         }        
         Saiku.ui.block("Loading datasources....");
