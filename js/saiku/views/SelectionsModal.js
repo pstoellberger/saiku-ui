@@ -162,10 +162,8 @@ var SelectionsModal = Modal.extend({
         showTotalsEl.val('');
 
         // fixme: we should check for deepest level here
-        if (_.size(hierarchy.levels) > 1 && level && level.hasOwnProperty('aggregators') && level.aggregators) {
-            if (level.aggregators.length > 0) {
-                this.show_totals_option = level.aggregators[0];
-            }
+        if (_.size(hierarchy.levels) > 0 && level && level.hasOwnProperty('aggregators') && level.aggregators && level.aggregators.length > 0) {            
+            this.show_totals_option = level.aggregators[0];
             showTotalsEl.removeAttr("disabled");
         } else {
             showTotalsEl.attr("disabled", true);
