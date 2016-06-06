@@ -142,16 +142,6 @@ var DimensionList = Backbone.View.extend({
         var level = $(event.target).attr('level');
         var axisName = "ROWS";
 
-        if ($(this.workspace.el).find(".workspace_fields ul.hierarchy[hierarchy='" + hierarchy + "']").length > 0) {
-             var $level = $(this.workspace.el).find(".workspace_fields ul[hierarchy='" + hierarchy + "'] a[level='" + level + "']").parent().show();
-            axisName = $level.parents('.fields_list_body').hasClass('rows') ? "ROWS" : "COLUMNS";
-        } else {
-            var $axis = $(this.workspace.el).find(".workspace_fields .fields_list[title='ROWS'] ul.hierarchy").length > 0 ?
-                $(this.workspace.el).find(".workspace_fields .fields_list[title='COLUMNS'] ul.connectable") :
-                $(this.workspace.el).find(".workspace_fields .fields_list[title='ROWS'] ul.connectable") ;
-
-            axisName = $axis.parents('.fields_list').attr('title');
-        }
         this.workspace.query.helper.includeLevel(axisName, hierarchy, level);
         this.workspace.sync_query();
         this.workspace.query.run();
