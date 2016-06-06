@@ -39,9 +39,12 @@ var QueryRouter = Backbone.Router.extend({
                 file: query_name
             }
         }
+        var fileparts = options.file.split('/');
+        var query_caption = fileparts[fileparts.length - 1];
 
         var params = _.extend({ 
-                file: options.file
+                file: options.file,
+                name: query_caption
             }, Settings.PARAMS);
 
         var dialog = {
