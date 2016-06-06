@@ -218,6 +218,8 @@ var Workspace = Backbone.View.extend({
         }
         if ($('#header').length === 0 || $('#header').is('hidden')) {
             heightReduction = 2;
+        } else {
+            heightReduction = $('#header').height() + 5;
         }
 
         $separator.height($("body").height() - heightReduction);

@@ -137,6 +137,13 @@ Saiku.events.bind('session:new', function(session) {
             // Remove tabs and global toolbar
             $('#header').remove();
         }
+        for(var i = 0, len = Saiku.tabs._tabs.length; i < len; i++) {
+            var tab = Saiku.tabs._tabs[i];
+            if (tab.content && tab.content.adjust) {
+                tab.content.adjust();
+            }
+        };
+
         if (Settings.BIPLUGIN) {
             // Bind to workspace
             if (Saiku.tabs._tabs[0] && Saiku.tabs._tabs[0].content) {
