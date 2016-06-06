@@ -422,8 +422,10 @@ var Workspace = Backbone.View.extend({
             this.query.run(true);
         }
         Saiku.i18n.translate();
-
-
+        var $tree = $(this.el).find('.sidebar')
+        $tree.hide();
+        $tree.get(0).offsetHeight; // no need to store this anywhere, the reference is enough
+        $tree.show();
     },
 
     synchronize_query: function() {
