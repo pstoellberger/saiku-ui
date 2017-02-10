@@ -24,6 +24,11 @@ var Cube = Backbone.Model.extend({
     },
     
     parse: function(response) {
+        if (Settings.MEASURES_SORT) {
+            response.measures = _.sortBy(response.measures, function(m) {
+                return m.defaultMeasure ? '     ' : m.caption;
+            });
+        }
         var template_dimensions = _.template($("#template-dimensions").html(), { dimensions: response.dimensions });
         var template_measures = _.template($("#template-measures").html(), { measures: response.measures });
         var template_attributes = _.template($("#template-attributes").html(), { cube: response });

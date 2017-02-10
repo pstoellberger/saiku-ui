@@ -54,6 +54,7 @@ var Settings = {
     MEMBERS_FROM_RESULT: true,
     MEMBERS_LIMIT: 3000,
     MEMBERS_SEARCH_LIMIT: 75,
+    MEASURES_SORT: true,
     ALLOW_IMPORT_EXPORT: false,
     ALLOW_PARAMETERS: true,
     ALLOW_EMPTY_ROWS: false,

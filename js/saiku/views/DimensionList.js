@@ -51,6 +51,11 @@ var DimensionList = Backbone.View.extend({
         } else if (! this.cube){
             $(this.el).html('Could not load attributes. Please log out and log in again.');
         } else {
+            if (Settings.MEASURES_SORT) {
+                cube.measures = _.sortBy(cube.measures, function(m) {
+                    return m.defaultMeasure ? '     ' : m.caption;
+                });
+            }
             var template = _.template($("#template-attributes").html());
             $(this.el).html(template);
             $(this.el).find(".loading").removeClass("hide");
@@ -176,7 +181,8 @@ var DimensionList = Backbone.View.extend({
     measure_dialog: function(event, ui) {
         (new MeasuresModal({ 
                                     workspace: this.workspace,
-                                    measure: null
+                                    measure: null,
+                                    calculated_measures: this.workspace.query.helper.getCalculatedMeasures()
         })).render().open();
     }
 

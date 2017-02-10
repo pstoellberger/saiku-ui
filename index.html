@@ -303,7 +303,7 @@
         <script type="text/x-jquery-tmpl" id="template-attributes">
 
         <div class="metadata_attribute_container">
-            <h3 class="measure_caption"><span class="i18n">Measures</span><a class="button addMeasure i18n" style="display:none;">Add</a></h3>
+            <h3 class="measure_caption"><span class="i18n">Measures</span><a class="button addMeasure i18n" style="display:none;">+ / Edit</a></h3>
             <div class="sidebar_inner measure_tree">
                 <% if (typeof cube != "undefined" && cube && cube.dimensions) { %>
                     <%= _.template($("#template-measures").html(), { measures: cube.measures }) %>

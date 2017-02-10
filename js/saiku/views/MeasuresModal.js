@@ -24,7 +24,8 @@ var MeasuresModal = Modal.extend({
 
     events: {
         'submit form': 'save',
-        'click .dialog_footer a' : 'call'
+        'click .dialog_footer a' : 'call',
+        'change .existing_select' : 'select_measure'
     },
 
     buttons: [
@@ -34,10 +35,12 @@ var MeasuresModal = Modal.extend({
 
     message: "<form id='measure_form'>"
                      + "<table border='0px'>"
+                     + "<tr><td class='col0 i18n existing'>Existing:</td>"
+                     + "<td class='col1 existing'><select class='existing_select'></select></td></tr>"
                      + "<tr><td class='col0 i18n'>Name:</td>"
-                     + "<td class='col1'><input type='text' class='measure_name' value='Measure Name'></input></td></tr>"
+                     + "<td class='col1'><input type='text' class='measure_name' value='Sales'></input></td></tr>"
                      + "<tr><td class='col0 i18n'>Formula:</td>"
-                     + "<td class='col1'><textarea class='measureFormula'>Measures.[Store Sales] + 100</textarea></td></tr>"
+                     + "<td class='col1'><textarea class='measureFormula'>[Measures].[Store Sales] + 100</textarea></td></tr>"
                      + "<tr><td class='col0 i18n'>Format:</td>"
                      + "<td class='col1'><input class='measure_format' type='text' value='#,##0.00'></input></td></tr>"
                      + "</table></form>",
@@ -50,6 +53,7 @@ var MeasuresModal = Modal.extend({
         var self = this;
         this.workspace = args.workspace;
         this.measure = args.measure;
+        this.calculated_measures = args.calculated_measures;
         _.bindAll(this, "save");
 
         this.options['title'] = "Calculated Measure";
@@ -61,7 +65,16 @@ var MeasuresModal = Modal.extend({
         }
 
         this.bind( 'open', function( ) {
-            if (self.measure) {
+            if (self.calculated_measures && self.calculated_measures.length) {
+                var $select = $(this.el).find('.existing_select');
+                $select.empty();
+                $('<option value="">New...</option>').appendTo($select);
+                _.each(self.calculated_measures, function(m) {
+                    $('<option value="' + m.name + '">' + m.name + '</option>').appendTo($select);
+                });
+                $(this.el).find('td.existing').show()
+            } else {
+                $(this.el).find('td.existing').hide()
             }
 
         });
@@ -75,6 +88,28 @@ var MeasuresModal = Modal.extend({
 
     },
 
+    select_measure: function(event) {
+        var measure = event.target.value;
+        if (measure) {
+            var m = _.find(this.calculated_measures, function(p) {
+                return p.name == measure;
+            });
+
+            if (m) {
+                $(this.el).find('.measureFormula').val(m.formula);
+                $(this.el).find('.measure_name').val(m.name);
+                if (m.properties['FORMAT_STRING']) {
+                    $(this.el).find('.measure_format').val(m.properties['FORMAT_STRING']);
+                 }
+            }
+        } else {
+            $(this.el).find('.measureFormula').val("[Measures].[Store Sales] + 100");
+            $(this.el).find('.measure_name').val("Sales");
+            $(this.el).find('.measure_format').val("#,##0.00");
+        }
+
+    },
+
 
     save: function( event ) {
         event.preventDefault( );
@@ -82,7 +117,6 @@ var MeasuresModal = Modal.extend({
         var measure_name = $(this.el).find('.measure_name').val();
         var measure_formula = $(this.el).find('.measureFormula').val();
         var measure_format = $(this.el).find('.measure_format').val();
-
 
         var alert_msg = "";
         if (typeof measure_name == "undefined" || !measure_name) {
@@ -98,6 +132,7 @@ var MeasuresModal = Modal.extend({
             if (measure_format) {
                 m.properties['FORMAT_STRING'] = measure_format;
             }
+            self.workspace.query.helper.removeCalculatedMeasure(measure_name);
             self.workspace.query.helper.addCalculatedMeasure(m);
             self.workspace.sync_query();
             this.close();

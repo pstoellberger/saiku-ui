@@ -201,7 +201,7 @@ SaikuOlapQueryHelper.prototype.removeCalculatedMeasure = function(name) {
   var removeMeasure = _.findWhere(measures , { name: name });
   if (removeMeasure && _.indexOf(measures, removeMeasure) > -1) {
     measures = _.without(measures, removeMeasure);
-    //console.log(measures);
+    this.model().queryModel.calculatedMeasures = measures;
   }
 };
 
