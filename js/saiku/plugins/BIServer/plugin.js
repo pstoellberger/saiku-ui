@@ -130,17 +130,30 @@ var BIPlugin = {
  * If plugin active, customize chrome
  */
 Saiku.events.bind('session:new', function(session) {
-    if (Settings.PLUGIN) {        
-        // Remove tabs and global toolbar
-        $('#header').remove();
-        // Bind to workspace
-        if (Saiku.tabs._tabs[0] && Saiku.tabs._tabs[0].content) {
-            BIPlugin.bind_callbacks(Saiku.tabs._tabs[0].content);
+    if (Settings.PLUGIN) {
+        if (Settings.PLUGIN && Settings.TABS) {
+            $('#toolbar').remove();
+        } else {
+            // Remove tabs and global toolbar
+            $('#header').remove();
         }
+        for(var i = 0, len = Saiku.tabs._tabs.length; i < len; i++) {
+            var tab = Saiku.tabs._tabs[i];
+            if (tab.content && tab.content.adjust) {
+                tab.content.adjust();
+            }
+        };
 
-        Saiku.session.bind('workspace:new', function(args) {
-            BIPlugin.bind_callbacks(args.workspace);
-        });
+        if (Settings.BIPLUGIN) {
+            // Bind to workspace
+            if (Saiku.tabs._tabs[0] && Saiku.tabs._tabs[0].content) {
+                BIPlugin.bind_callbacks(Saiku.tabs._tabs[0].content);
+            }
+
+            Saiku.session.bind('workspace:new', function(args) {
+                BIPlugin.bind_callbacks(args.workspace);
+            });
+        }
     }
 });
 

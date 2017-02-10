@@ -339,7 +339,7 @@ var OpenQuery = Backbone.View.extend({
         var $target = $(event.currentTarget).find('a');
         var path = $target.attr('href').replace('#', '');
         var name = $target.text();
-        this.selected_query = new SavedQuery({ file: path, name: path });
+        this.selected_query = new SavedQuery({ file: path, name: name });
         this.open_query();
     },
     
@@ -348,10 +348,11 @@ var OpenQuery = Backbone.View.extend({
         var item = this.queries[this.selected_query.get('file')];
         var params = _.extend({ 
                         file: this.selected_query.get('file'),
-                        formatter: Settings.CELLSET_FORMATTER
+                        formatter: Settings.CELLSET_FORMATTER,
+                        name:  this.selected_query.get('name')
                     }, Settings.PARAMS);
 
-        var query = new Query(params,{ name: this.selected_query.get('name') });
+        var query = new Query(params);
         var state = null;
         if(viewstate && !viewstate.hasOwnProperty('currentTarget')) {
             state = viewstate;

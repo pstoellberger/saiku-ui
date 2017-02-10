@@ -70,6 +70,8 @@ var Tab = Backbone.View.extend({
             recursive_menu_translate(item, Saiku.i18n.po_file);
         });
 
+        $(this.el).find('.saikutab span').tipsy({ delayIn: 500, fade: true});
+
         $.contextMenu('destroy', '.saikutab');
         $.contextMenu({
                 selector: '.saikutab',
@@ -181,6 +183,7 @@ var TabPager = Backbone.View.extend({
                 this.tabset._tabs[i].caption + "</a><br />";
         }
         $(this.el).html(pager);
+        $(this.el).find('a span').tipsy({ delayIn: 500, fade: true});
         $(this.el).find(".i18n").i18n(Saiku.i18n.po_file);
     },
     

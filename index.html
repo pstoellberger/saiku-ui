@@ -192,11 +192,25 @@
             <li class='parent_dimension'>
                 <span class="root collapsed sprite"></span>
                 <a class="folder_collapsed sprite" href="#" title="<%= dimension.description ? dimension.description : dimension.caption %>"><%= dimension.caption %></a>
-                <ul>
+                <ul class="dimension_tree_folder hide">
+                <% 
+                    var hide_hierarchy = (dimension.hierarchies.length === 1 || Settings.DIMENSION_SHOW_REDUCED);
+                    if (hide_hierarchy) {
+                        var smallLevel = true;
+                            _.each(dimension.hierarchies, function(h) {
+                                var countLevels = 0;
+                                _.each(h.levels, function(l) { 
+                                    countLevels += ((l.name !== "(All)" || Settings.DIMENSION_SHOW_ALL) ? 1 : 0);
+                                });
+                                smallLevel = smallLevel && (countLevels <= 1);
+                            });
+                        hide_hierarchy = hide_hierarchy && smallLevel;
+                    }
+                %>
                 <% _.each(dimension.hierarchies, function(hierarchy) { %>
-                    <% if (typeof hierarchy["visible"] == "undefined" || hierarchy["visible"]) { %>
-                        <% if (!Settings.DIMENSION_SHOW_REDUCED && dimension.hierarchies.length > 1) { %>
-                            <li class="hierarchy hide">
+                    <% if (typeof hierarchy["visible"] == "undefined" || hierarchy["visible"] === true) { %>
+                        <% if (!hide_hierarchy) {  %>
+                            <li class="hierarchy ">
                                 <a class="dimension" title="<%= hierarchy.description ? hierarchy.description : hierarchy.caption %>" href="#"  hierarchy="<%= hierarchy.name %>"><%= hierarchy.caption %></a>
                             </li>
                         <% } %>
@@ -204,7 +218,7 @@
                         <div class="hgroup treehidden"><%= hierarchy.caption %></div>
                         <% _.each(hierarchy.levels, function(level) { %>
                             <% if ((Settings.DIMENSION_SHOW_ALL || level.name != "(All)") && (typeof level["visible"] == "undefined" || level["visible"])) { %>
-                                <li class="hide d_level">
+                                <li class="d_level">
                                 <a title="<%= Settings.DIMENSION_SHOW_REDUCED && dimension.hierarchies.length > 1? hierarchy.caption + ' - ' : '' %><%= level.description ? level.description : level.caption %>" level="<%= level.name %>" hierarchy="<%= hierarchy.uniqueName %>"
                                     class="level" href="#<%= encodeURIComponent(hierarchy.uniqueName) %>/<%= encodeURIComponent(level.name) %>"><%= level.caption %></a>
                                 </li>
@@ -225,7 +239,7 @@
                 <span class="root expand sprite"></span>
                    <a href="#" title="Measures" class="folder_expand sprite i18n">Measures</a>
                 
-                <ul>
+                <ul class="dimension_tree_folder">
                 <% _.each(measures, function(measure) { %>
                     <% if (typeof measure["visible"] == "undefined" || measure["visible"]) { %>
                         <li class="d_measure"><a title="<%= measure.description ? measure.description : measure.uniqueName %>"
@@ -727,6 +741,7 @@
                 <span class="private_owner" style="display:none;"><span class="i18n">Currently private to:</span>&nbsp;<span class="owner"></span></span>
             </div>
             <br />
+            <div class="autocomplete"></div>
         </script>
         <script type="text/x-jquery-tmpl" id="template-permissions-rolelist">
             <select class="select_roles" multiple size="4">

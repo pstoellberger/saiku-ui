@@ -96,10 +96,17 @@ var Workspace = Backbone.View.extend({
     },
     
     caption: function(increment) {
-        if (this.query && this.query.model.name) {
-            return this.query.model.name;
-        } else if (this.query && this.query.get('name')) {
-            return this.query.get('name');
+        var name = null;
+        if (this.query && this.query.get('name')) {
+            name = this.query.get('name');
+        } else if (this.query && this.query.model.name) {
+            name = this.query.model.name;
+        }
+        if (this.query && this.query.get('file')) {
+            title = this.query.get('file');
+            return "<span title='" + title + "'>" + name + "</span>";
+        } else if (name) {
+            return name;
         }
         if (increment) {
             Saiku.tabs.queryCount++;
@@ -211,6 +218,8 @@ var Workspace = Backbone.View.extend({
         }
         if ($('#header').length === 0 || $('#header').is('hidden')) {
             heightReduction = 2;
+        } else {
+            heightReduction = $('#header').height() + 5;
         }
 
         $separator.height($("body").height() - heightReduction);
@@ -415,8 +424,12 @@ var Workspace = Backbone.View.extend({
             this.query.run(true);
         }
         Saiku.i18n.translate();
-
-
+        if (!$(this.el).find('.sidebar').hasClass('hide')) {
+            var $tree = $(this.el).find('.sidebar')
+            $tree.hide();
+            $tree.get(0).offsetHeight; // no need to store this anywhere, the reference is enough
+            $tree.show();
+        }
     },
 
     synchronize_query: function() {

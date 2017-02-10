@@ -223,17 +223,19 @@ var OpenDialog = Modal.extend({
         // Save the name for future reference
         var $currentTarget = $( event.currentTarget );
         var file = $(this.el).find('.query_name').html();
+        var name = file;
         if ($currentTarget.hasClass('query')) {
             file = $currentTarget.find( 'a' ).attr('href').replace('#','');
+            name = $currentTarget.find( 'a' ).text();
         }
 
-        var selected_query = new SavedQuery({ file: file });
         this.close();
         Saiku.ui.block("Opening query...");
         var item = this.queries[file];
                 var params = _.extend({ 
                         file: file,
-                        formatter: Settings.CELLSET_FORMATTER
+                        formatter: Settings.CELLSET_FORMATTER,
+                        name: name
                     }, Settings.PARAMS);
 
         var query = new Query(params,{ name: file  });
